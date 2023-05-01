@@ -32,21 +32,24 @@ In Anvil's assets section, add a directory to place your translations in, ideall
 With Fluent, you can use variables for placeholders or selecting the appropriate translation. In the following example we are going to greet the user. Therefore, we use a variable as a placeholder for the user's name. Assume that the content of es_MX/main.ftl is: 
 `hello = Hola { $name }.`
 
-Then, import two classes in your form (Message is optional but required for the examples):
+Then, import the fluent singleton object and the Message class in your form (Message is optional but required for the examples):
 ```py
-from fluent_anvil.lib import Fluent, Message
+from fluent_anvil.lib import fluent, Message
 ```
 If you want to know which locale the user prefers, just call
 ```py
-Fluent.get_preferred_locales()
+fluent.get_preferred_locales()
 ```
 This will return a list of locales such as `['de-DE']` that the user prefers (this method does not use Fluent but the [get-user-locale](https://www.npmjs.com/package/get-user-locale) package).
 
-Now, you can initialize Fluent using the following (we ignore the preferred locale for now):
+Now, you can configure Fluent using the following (we ignore the preferred locale for now):
 ```py
-fl = Fluent("localization/{locale}/main.ftl", "es-MX", ["en-US", "es-MX"])
+fluent.configure(["es-MX"], "localization/{locale}/main.ftl")
 ```
-This will initialize fluent with the Mexican Spanish locale. The first parameter is a template string indicating where the translation files are stored. The placeholder {locale} is replaced with the desired locale (hyphens converted to underscore, because Anvil does not allow hyphens in directory names). The second parameter is the desired locale. The last parameter is a list of fallback locales that will be iterated through if translation fails. Generally, all methods of the Python object accept locales regardless of whether you use hyphens or underscores. Note that you do not have to provide the full URL starting with `./_/theme/`. It will be prepended automatically. If your translation files are stored somewhere else entirely you can explicitly set the prefix by adding it to the end of the parameter list.
+This will tell fluent to use the Mexican Spanish locale. The first parameter is a list of desired locales. Locales are given in the order of preference (most preferable first). This means, Fluent will always try the first locale in the list when trying to find a translation. If a translation is not available for that locale, Fluent will try the others one after another until a suitable translation has been found. The second parameter is a template string indicating where the translation files are stored. The placeholder {locale} is replaced with the desired locale (hyphens converted to underscore, because Anvil does not allow hyphens in directory names). Generally, all methods of the `fluent` Python object accept locales regardless of whether you use hyphens or underscores. Note that you do not have to provide the full URL starting with `./_/theme/`. It will be prepended automatically. If your translation files are stored somewhere else entirely you can explicitly set the prefix by adding it to the end of the parameter list. The template string in the above example is actually the default. So, if you store your translations files in the way outlined above, you can omitt it. In this case, the call becomes simply:
+```py
+fluent.configure(["es-MX"])
+```
 
 Now, you can greet the user:
 ```py
@@ -85,9 +88,9 @@ fl.format(
 ```
 You just provide the component and the name of the attribute you want to write to (similar to Python's `setattr()` function).
 
-You can switch to a different locale on the fly using `set_locale()`. Again, the first parameter is the desired locale and the second is a list of fallback locales.
+You can switch to a different locale on the fly using `set_locale()`. Again, the first list element is the desired locale and the remaining entries in the list are fallback locales in case the translation searched for is not available for the desired locale.
 ```py
-fluent.set_locale("en-US", ["en-GB", "en-AU"])
+fluent.set_locale(["en-US", "en-GB", "en-AU"])
 ```
 
 ### Bonus Round: Translate your HTML Templates
