@@ -136,8 +136,8 @@ options = [
 
 options = fluent.format_table(options, ["key"], my_contenxt_var = "my context")
 ```
-The second parameter is a list of keys to translate. Fluent-Anvil assume that every key
-given denotes a Fluent message id. Other keys will not be touched and returned as-is.
+The second parameter is a list of keys to translate. Fluent-Anvil assumes that the value of every given key
+represents a Fluent message id. Other keys and their values will not be touched and returned as-is.
 Context variables can be provided as keyworded arguments or omitted completely.
 
 ### Bonus Round: Translate your HTML Templates
