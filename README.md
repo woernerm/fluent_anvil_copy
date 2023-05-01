@@ -90,12 +90,13 @@ fluent.set_locale(["en-US", "en-GB", "en-AU"])
 Although this is completely equivalent to `fluent.configure(["en-US", "en-GB", "en-AU"])`, its meaning is more obvious when reading code.
 
 ### Keeping Translation Code Short and Expressive
-You often have various different data structures that require translation. These include
+You often have various data structures that require translation. These include
 Anvil component attributes, lists, dictionaries and combinations of these. With Fluent-Anvil
 you can translate them on the fly without the need to unpack, translate and repack them again.
+Some examples are given in the following.
 
 #### Dictionaries
-For example, the format() method also works with dictionaries for which it will translate the values:
+The format() method also works with dictionaries for which it will translate the values:
 ```py
 fluent.format({
         "my key 1": "my-fluent-message",
