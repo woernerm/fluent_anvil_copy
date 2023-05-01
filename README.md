@@ -250,7 +250,7 @@ message is returned.
 
 So, should you use `my_validator.validate(value, *args, **kwargs)` or 
 `my_validator(value, default, *args, **kwargs)`? This depends on what you want to do
-in case validation fails. If you just want to display a message, just call the
+in case validation fails. If you just want to display a message, call the
 validator. If you want to do several things at once like showing the message and
 changing the role of a component (e.g. to highlight the text box for which
 validation failed), use `my_validator.validate(value, *args, **kwargs)` in a 
