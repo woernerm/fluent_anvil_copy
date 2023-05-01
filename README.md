@@ -205,10 +205,10 @@ def my_datepicker_change(self, **event_args):
     except ValidationError as error:
         self.my_label.text = str(error)
 ```
-The `validate(value, *args, **kwargs)` method calls the lambda function defined earlier
-when creating the Validator instance in the previous example. You are not limited to a 
-single parameter. You can define an arbitrary validation function signature as long as 
-it has at least one required parameter. You then provide all required parameter values to 
+The `validate(value, *args, **kwargs)` method calls the lambda function defined earlier. 
+The validation function is not limited to a single parameter. You can define an arbitrary 
+validation function signature as long as it has at least one required parameter. You then 
+provide all required parameter values to 
 `validate(value, *args, **kwargs)`. If validation passes, nothing happes. In the above
 example, the label text is set to an empty string. If validation fails, a ValidationError
 is thrown. The exception message will contain the desired translation defined earlier.
