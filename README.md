@@ -166,9 +166,10 @@ If you do not initialize a Fluent instance, you will see "Localize me!". As soon
 ## Validation
 An essential part of a good user interface is proper input validation. This requires
 that you provide feedback to the user in a language the user understands. Fluent-Anvil
-has you covered there as well: The validator module defines a Validator class with
-which you can define a translated validation procedure. Consider a datepicker 
-called `my_datepicker` that allows the user to define a deadline for a task. We want to 
+has you covered there as well: The validator module defines a `Validator` class with
+which you can define a translated validation procedure. 
+
+Consider a datepicker called `my_datepicker` that allows the user to define a deadline for a task. We want to 
 validate that the selected date is not in the past. Otherwise, a message informing
 the user about the invalid date shall be shown using a label component called 
 `my_label`. A solution might look like this:
