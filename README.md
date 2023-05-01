@@ -229,11 +229,11 @@ text_length_validator = Validator(
     my_context_var = "my context
 )
 ```
-When calling `validate(value, *args, **kwargs)`, the validation functions are called
+When calling `validate(value, *args, **kwargs)` the validation functions are called
 one after another. In the above example, it is first checked whether the text is long
-enough. After that, it is checked whether the text is short enough. As usual, context
-variables that are passed on to Fluent can be provided as keyworded arguments or omitted 
-completely.
+enough. After that, it is checked whether the text is short enough. As usual, optional 
+context variables can be passed on to the Fluent translation string by providing them as 
+keyworded arguments.
 
 Validator objects are callable. This is useful, if you do not want to throw an exception:
 ```py
