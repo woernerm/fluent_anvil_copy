@@ -14,7 +14,9 @@ de_DE/main.ftl:
 close-button = Schließen
 ```
 
-For simple translations, the syntax stays simple. If a translation happens to be more complicated for a language, you only need to add the logic in the translation file for that particular language. You can find out more at [Project Fluent](https://projectfluent.org/).
+For simple translations, the syntax stays simple: Define a message id like `close-button` and provide the translation after the equal sign. If a 
+translation happens to be more complicated for a language, you only need to add the logic in the translation file for that particular language. 
+You can find out more at [Project Fluent](https://projectfluent.org/).
 The translation happens entirely on the client side. Therefore, it works on [Anvil's free plan](https://anvil.works/pricing) as well since there is no need to install a special package.
 
 Please note that this is a personal project with the hope that it may be of use to others as well. I am neither affiliated with [Project Fluent](https://projectfluent.org/) nor [Anvil](https://anvil.works/).
@@ -79,7 +81,30 @@ print(fluent.format(
     ...
 ))
 ```
-This returns a list of all translations in the same order as the corresponding Message instances. That's nice already. However, my favorite feature is the possibility to write directly to GUI component attributes:
+This returns a list of all translations in the same order as the corresponding Message instances.
+
+You can switch to a different locale on the fly using `set_locale()`. Again, the first list element is the desired locale and the remaining entries in the list are fallback locales in case the translation searched for is not available for the desired locale.
+```py
+fluent.set_locale(["en-US", "en-GB", "en-AU"])
+```
+Although this is completely equivalent to `fluent.configure(["en-US", "en-GB", "en-AU"])`, its meaning is more obvious when reading code.
+
+### Keeping Translation Code Short and Expressive
+You often have various different data structures that require translation. These include
+Anvil component attributes, lists, dictionaries and combinations of these. With Fluent-Anvil
+you can translate them on the fly without the need to unpack, translate and repack them again.
+
+#### Dictionaries
+For example, the format() method also works with dictionaries for which it will translate the values:
+```py
+fluent.format({
+        "my key 1": "my-fluent-message",
+        "my key 2": "my-other-fluent-message"
+    })
+```
+
+#### Anvil GUI Components
+One of my favorite features is the possibility to write directly to GUI component attributes:
 ```py
 fluent.format(
     Message("hello", name="world"), 
@@ -88,10 +113,30 @@ fluent.format(
 ```
 You just provide the component and the name of the attribute you want to write to (similar to Python's `setattr()` function).
 
-You can switch to a different locale on the fly using `set_locale()`. Again, the first list element is the desired locale and the remaining entries in the list are fallback locales in case the translation searched for is not available for the desired locale.
+#### Lists of Dictionaries (Anvil Extras MultiSelectDropdown)
+Lists of dictionaries are useful to model tables. You can translate these using the `format_table()` method. In the following
+example we are going to translate the names for units of time. The data structure is typical to what the
+[MultiSelectDropdown from the Anvil Extras package](https://anvil-extras.readthedocs.io/en/latest/guides/components/multi_select_dropdown.html)
+expects:
+ 
 ```py
-fluent.set_locale(["en-US", "en-GB", "en-AU"])
+options = [
+    {"value": "nanosecond", "key": "unit-nanosecond"},
+    {"value": "microsecond", "key": "unit-microsecond"},
+    {"value": "millisecond", "key": "unit-millisecond"},
+    {"value": "second", "key": "unit-second"},
+    {"value": "minute", "key": "unit-minute"},
+    {"value": "hour", "key": "unit-hour"},
+    {"value": "day", "key": "unit-day"},
+    {"value": "week", "key": "unit-week"},
+    {"value": "year", "key": "unit-year"}
+]
+
+options = fluent.format_table(options, ["key"], my_contenxt_var = "my context")
 ```
+The second parameter is a list of keys to translate. Fluent-Anvil assume that every key
+given denotes a Fluent message id. Other keys will not be touched and returned as-is.
+Context variables can be provided as keyworded arguments or omitted completely.
 
 ### Bonus Round: Translate your HTML Templates
 You can translate your static content as well. Just add the tags `data-l10n-id` for the message id and `data-l10n-args` for context variables (if needed) like this:
