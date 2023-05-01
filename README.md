@@ -190,7 +190,7 @@ The Validator initialization method only requires two parameters:
 it may also be a [Zod validator from Anvil Extras](https://anvil-extras.readthedocs.io/en/latest/guides/modules/zod.html).
 * A Fluent message id that represents an explainatory message to the user if validation fails.
 
-In the Form class of your Anvil app, you may define a change event for your datepicker in which validation
+In the Form class of the Anvil app, we can define a change event for the datepicker in which validation
 is performed:
 
 ```py
