@@ -216,8 +216,8 @@ empty string. If validation fails, a ValidationError is thrown. The exception me
 will contain the desired translation corresponding to the message id 
 `"deadline-in-the-past"` as defined earlier.
 
-Multiple validation steps can be combined during initialization by alternately providing
-validation function and Fluent message id like this:
+Multiple validation steps can be chained by alternately providing validation function and 
+Fluent message id during initialization of the Validator class like this:
 ```py
 from fluent_anvil.lib import Validator
 
