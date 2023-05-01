@@ -115,7 +115,7 @@ fluent.format(
 You just provide the component and the name of the attribute you want to write to (similar to Python's `setattr()` function).
 
 #### Lists of Dictionaries (Anvil Extras MultiSelectDropdown)
-Lists of dictionaries are commonly used to model tables: The list entries represent row 
+Lists of dictionaries are commonly used to model tables: The list entries represent rows 
 and each dictionary entry represents a named column. You can translate these using the `format_table()` method. In the following
 example we are going to translate the names for units of time. The data structure is typical to what the
 [MultiSelectDropdown from the Anvil Extras package](https://anvil-extras.readthedocs.io/en/latest/guides/components/multi_select_dropdown.html)
