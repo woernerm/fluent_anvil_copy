@@ -181,7 +181,7 @@ from datetime import datetime
 deadline_validator = Validator(
     lambda value: value >= datetime.now().astimezone(),
     "deadline-in-the-past",
-    my_context_var = "my context
+    my_context_var = "my context"
 )
 ```
 
