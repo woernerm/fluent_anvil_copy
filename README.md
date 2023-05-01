@@ -208,10 +208,12 @@ def my_datepicker_change(self, **event_args):
 The `validate(value, *args, **kwargs)` method calls the lambda function defined earlier. 
 The validation function is not limited to a single parameter. You can define an arbitrary 
 validation function signature as long as it has at least one required parameter. You then 
-provide all required parameter values to 
-`validate(value, *args, **kwargs)`. If validation passes, nothing happes. In the above
-example, the label text is set to an empty string. If validation fails, a ValidationError
-is thrown. The exception message will contain the desired translation defined earlier.
+provide all required parameter values to `validate(value, *args, **kwargs)` which in
+turn passes them on to your validation function.
+
+If validation passes, nothing happes. In the above example, the label text is set to an 
+empty string. If validation fails, a ValidationError is thrown. The exception message 
+will contain the desired translation defined earlier.
 
 Multiple validation steps can be combined during initialization by alternately providing
 validation function and Fluent message id like this:
