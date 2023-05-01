@@ -134,11 +134,27 @@ options = [
     {"value": "year", "key": "unit-year"}
 ]
 
-options = fluent.format_table(options, ["key"], my_contenxt_var = "my context")
+translated_options = fluent.format_table(options, ["key"], my_contenxt_var = "my context")
 ```
 The second parameter is a list of keys to translate. Fluent-Anvil assumes that the value of every given key
 represents a Fluent message id. Other keys and their values will not be touched and returned as-is.
-Context variables can be provided as keyworded arguments or omitted completely.
+Context variables can be provided as keyworded arguments or omitted completely. For example,
+consider you selected "de_DE" as locale and had someone provide you with the corresponding .ftl
+file, the result might look like this:
+
+```py
+translated_options = [
+    {"value": "nanosecond", "key": "Nanosekunde"},
+    {"value": "microsecond", "key": "Mikrosekunde"},
+    {"value": "millisecond", "key": "Millisekunde"},
+    {"value": "second", "key": "Sekunde"},
+    {"value": "minute", "key": "Minute"},
+    {"value": "hour", "key": "Stunde"},
+    {"value": "day", "key": "Tag"},
+    {"value": "week", "key": "Woche"},
+    {"value": "year", "key": "Jahr"}
+]
+```
 
 ### Bonus Round: Translate your HTML Templates
 You can translate your static content as well. Just add the tags `data-l10n-id` for the message id and `data-l10n-args` for context variables (if needed) like this:
@@ -146,3 +162,92 @@ You can translate your static content as well. Just add the tags `data-l10n-id` 
 <h1 id='welcome' data-l10n-id='hello' data-l10n-args='{"name": "world"}'>Localize me!</h1>
 ```
 If you do not initialize a Fluent instance, you will see "Localize me!". As soon as the Fluent instance is initialized (e.g. with locale es-MX), the text changes to "Hola ⁨world⁩". If Fluent would fail for some reason, the default text (in this case "Localize me!") would be shown.
+
+## Validation
+An essential part of a good user interface is proper input validation. This requires
+that you provide feedback to the user in a language the user understands. Fluent-Anvil
+has you covered there as well: The validator module defines a Validator class with
+which you can define a translated validation procedure. Consider a datepicker 
+called `my_datepicker` that allows the user to define a deadline for a task. We want to 
+validate that the selected date is not in the past. Otherwise, a message informing
+the user about the invalid date shall be shown using a label component called 
+`my_label`. A solution might look like this:
+
+```py
+from fluent_anvil.lib import Validator
+from datetime import datetime
+
+deadline_validator = Validator(
+    lambda value: value >= datetime.now().astimezone(),
+    "deadline-in-the-past",
+    my_context_var = "my context
+)
+```
+
+The Validator only requires two parameters:
+* A function that returns True, if the value to be validated passed the validation test. Alternatively,
+it may also be a [Zod validator from Anvil Extras](https://anvil-extras.readthedocs.io/en/latest/guides/modules/zod.html).
+* A Fluent message id that represents a explainatory message to the user if validation fails.
+
+In the form, you may define a change event for your datepicker in which validation
+is performed:
+
+```py
+from fluent_anvil.lib import ValidationError
+
+# Some other code
+
+def my_datepicker_change(self, **event_args):
+    try:
+        deadline_validator.validate(self.my_deadline.value)
+        self.my_label.text = ""
+    except ValidationError as error:
+        self.my_label.text = str(error)
+```
+The `validate(value, *args, **kwargs)` method calls the lambda function defined earlier
+when creating the Validator instance in the previous example. You are not limited to a 
+single parameter. You can define an arbitrary validation function signature as long as 
+it has at least one required parameter. You then provide all required parameter values to 
+`validate(value, *args, **kwargs)`. If validation passes, nothing happes. In the above
+example, the label text is set to an empty string. If validation fails, a ValidationError
+is thrown. The exception message will contain the desired translation defined earlier.
+
+Multiple validation steps can be combined during initialization by alternately providing
+validation function and Fluent message id like this:
+```py
+from fluent_anvil.lib import Validator
+
+text_length_validator = Validator(
+    lambda text: len(text) > 10,
+    "text-too-short",
+    lambda text: len(text) < 120,
+    "text-too-long",
+    my_context_var = "my context
+)
+```
+When calling `validate(value, *args, **kwargs)`, the validation functions are called
+one after another. In the above example, it is first checked whether the text is long
+enough. After that, it is checked whether the text is short enough. As usual, context
+variables that are passed on to Fluent can be provided as keyworded arguments or omitted 
+completely.
+
+Validator objects are callable. This is useful, if you do not want to throw an exception:
+```py
+from fluent_anvil.lib import ValidationError
+
+# Some other code
+
+def my_datepicker_change(self, **event_args):
+    self.my_label.text = deadline_validator(self.my_deadline.value, "")
+```
+If the provided value passes validation, the given default value is returned (usually 
+an empty string, None or some other special value). Otherwise, the translated error 
+message is returned.
+
+So, should you use `my_validator.validate(value, *args, **kwargs)` or 
+`my_validator(value, default, *args, **kwargs)`? This depends on what you want to do
+in case validation fails. If you just want to display a message, just call the
+validator. If you want to do several things at once like showing the message and
+changing the role of a component (e.g. to highlight the text box for which
+validation failed), use `my_validator.validate(value, *args, **kwargs)` in a 
+try...except block as shown in the first example.
