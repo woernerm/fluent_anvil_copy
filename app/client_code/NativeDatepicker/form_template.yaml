@@ -1,0 +1,49 @@
+properties:
+- {name: pick_time, type: boolean, default_value: false, default_binding_prop: true,
+  description: Add the ability to select a time of day.}
+- {name: value, type: string, default_value: '', description: The date that is currently set.}
+- {name: min, type: string, default_value: '', description: Limits which dates can be selected. This is the minimum date.}
+- {name: max, type: string, default_value: '', description: Limits which dates can be selected. This is the maximum date.}
+- {name: role, type: string, default_value: '', group: Appearance, description: Choose how your component can appear based on your apps visual theme.}
+- name: spacing_above
+  type: enum
+  options: [none, small, medium, large]
+  default_value: small
+  description: The spacing above the component.
+  group: Layout
+- name: spacing_below
+  type: enum
+  options: [none, small, medium, large]
+  default_value: small
+  description: The spacing below the component
+  group: Layout
+is_package: true
+events:
+- name: change
+  default_event: true
+  description: Called when the value is modified.
+  parameters:
+  - {name: value, description: The current date / time set.}
+- {name: lost_focus, description: When the datepicker loses focus}
+- {name: focus, description: When the datepicker gets focus}
+custom_component: true
+components: []
+container:
+  type: HtmlTemplate
+  properties: {tooltip: '', background: '', foreground: '', border: '', visible: true,
+    role: null, html: "<center>\n    <input \n        type=\"datetime-local\" \n \
+      \       class=\"form-control\"\n        min=\"\"\n        max=\"\"\n       \
+      \ value=\"\"\n        onchange=\"anvil.call($(this), 'picker_change', $(this).val());\"\
+      \n        onfocusout=\"anvil.call($(this), 'picker_lost_focus');\"\n       \
+      \ onfocusin=\"anvil.call($(this), 'picker_gain_focus');\"\n    >\n    <script>\
+      \        \n    function setValue(value){\n        this.find(\"input\").val(value);\n\
+      \    }\n    function setComponent(){\n        this.find(\"input\").addClass(\"\
+      anvil-component\");\n    }\n    function setRole(role){\n        this.find(\"\
+      input\").removeClass (function (index, className) {\n            return (className.match\
+      \ (/(^|\\s)anvil-role-\\S+/g) || []).join(' ');\n        });\n        this.find(\"\
+      input\").attr(\"anvil-role\", role);\n        this.find(\"input\").addClass(\"\
+      anvil-role-\"+role);\n    }\n    function setSpacingAbove(spacing){\n      \
+      \  this.find(\"input\").addClass(\"anvil-spacing-above-\"+spacing);\n    }\n\
+      \    function setSpacingBelow(spacing){\n        this.find(\"input\").addClass(\"\
+      anvil-spacing-below-\"+spacing);\n    }\n    </script>\n</center>"}
+  event_bindings: {show: form_show}

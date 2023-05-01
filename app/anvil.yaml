@@ -2,7 +2,7 @@ services:
 - source: /runtime/services/tables.yml
   client_config: {}
   server_config: {}
-startup: {type: form, module: Testform}
+startup: {type: form, module: _test_localizedmultiselectdropdown}
 package_name: fluent_anvil
 allow_embedding: false
 name: fluent_anvil

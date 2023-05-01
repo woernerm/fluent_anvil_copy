@@ -1,0 +1,37 @@
+is_package: true
+container:
+  type: HtmlTemplate
+  properties: {html: '@theme:standard-page.html'}
+  event_bindings: {show: form_show}
+components:
+- type: ColumnPanel
+  properties: {col_widths: '{}'}
+  name: content_panel
+  layout_properties: {slot: default}
+  components:
+  - type: form:NativeDatepicker
+    properties: {pick_time: false, value: '', min: '', max: '', role: my_role}
+    name: native_datepicker_1
+    layout_properties: {grid_position: 'NTZUZQ,HCHYVK'}
+    event_bindings: {change: native_datepicker_1_change, lost_focus: native_datepicker_1_lost_focus,
+      focus: native_datepicker_1_focus}
+  - type: form:NativeDatepicker
+    properties: {}
+    name: native_datepicker_2
+    layout_properties: {grid_position: 'NTZUZQ,GXKXTW'}
+  event_bindings: {show: content_panel_show}
+- type: DatePicker
+  properties: {role: null, align: left, max_date: '', pick_time: false, tooltip: '',
+    placeholder: '', border: '', enabled: true, foreground: '', visible: true, font_size: null,
+    font: '', spacing_above: small, spacing_below: small, italic: false, date: '',
+    min_date: '', background: '', bold: false, underline: false, format: ''}
+  name: date_picker_1
+  layout_properties: {slot: default}
+- type: form:LocalizedMultiSelectDropdown
+  properties: {}
+  name: dropdown
+  layout_properties: {slot: default}
+- type: form:LocalizedMultiSelectDropdown
+  properties: {}
+  name: custom_1
+  layout_properties: {slot: default}
