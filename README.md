@@ -186,11 +186,11 @@ deadline_validator = Validator(
 ```
 
 The Validator initialization method only requires two parameters:
-* A function that returns True, if the value to be validated passed the validation test. Alternatively,
+* A function that returns True, if the value to be validated passed the validation test. False, otherwise. Alternatively,
 it may also be a [Zod validator from Anvil Extras](https://anvil-extras.readthedocs.io/en/latest/guides/modules/zod.html).
-* A Fluent message id that represents a explainatory message to the user if validation fails.
+* A Fluent message id that represents an explainatory message to the user if validation fails.
 
-In the form, you may define a change event for your datepicker in which validation
+In the Form class of your Anvil app, you may define a change event for your datepicker in which validation
 is performed:
 
 ```py
