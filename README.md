@@ -211,9 +211,10 @@ validation function signature as long as it has at least one required parameter.
 provide all required parameter values to `validate(value, *args, **kwargs)` which in
 turn passes them on to your validation function.
 
-If validation passes, nothing happes. In the above example, the label text is set to an 
+If validation succeeds, nothing happens. In the above example, the label text is set to an 
 empty string. If validation fails, a ValidationError is thrown. The exception message 
-will contain the desired translation defined earlier.
+will contain the desired translation corresponding to the message id 
+`"deadline-in-the-past"` as defined earlier.
 
 Multiple validation steps can be combined during initialization by alternately providing
 validation function and Fluent message id like this:
