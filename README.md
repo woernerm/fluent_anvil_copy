@@ -73,7 +73,7 @@ Pay attention to the use of dot and comma which is specific to the respective co
 
 You can translate multiple strings at once (that's more efficient than one by one) by wrapping them in Message objects:
 ```py
-print(fl.format(
+print(fluent.format(
     Message("hello", name="World"), 
     Message("welcome-back", name="John"),
     ...
@@ -81,7 +81,7 @@ print(fl.format(
 ```
 This returns a list of all translations in the same order as the corresponding Message instances. That's nice already. However, my favorite feature is the possibility to write directly to GUI component attributes:
 ```py
-fl.format(
+fluent.format(
     Message("hello", name="world"), 
     Message(self.label, "text", "hello", name="John"),
 )
