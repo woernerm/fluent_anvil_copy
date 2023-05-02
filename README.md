@@ -278,19 +278,18 @@ text_length_validator = LengthValidator(
 
 # Some other code
 
-def on_text_area_lost_focus(self, **event_args):
+def validate_form(self, save: bool):
     try:
-        text_length_validator.validate(self.my_text.text, False)
+        text_length_validator.validate(self.my_text.text, save)
         self.my_label.text = ""
     except ValidationError as error:
         self.my_label.text = str(error)
 
+def on_text_area_lost_focus(self, **event_args):
+    self.validate_form(False)
+
 def on_save_button(self, **event_args):
-    try:
-        text_length_validator.validate(self.my_text.text, True)
-        self.my_label.text = ""
-    except ValidationError as error:
-        self.my_label.text = str(error)
+    self.validate_form(True)
 ```
 The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
 The next two parameters denote the error message ids for a text that is either too short
