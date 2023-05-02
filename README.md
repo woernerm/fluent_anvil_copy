@@ -278,7 +278,7 @@ text_length_validator = LengthValidator(
 
 # Some other code
 
-def my_text_change(self, **event_args):
+def on_save_draft_button(self, **event_args):
     try:
         text_length_validator.validate(self.my_text.text, False)
         self.my_label.text = ""
