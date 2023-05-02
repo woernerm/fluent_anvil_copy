@@ -196,14 +196,16 @@ is performed:
 ```py
 from fluent_anvil.lib import ValidationError
 
-# Some other code
+class EditDateForm(EditDateTemplate):
 
-def my_datepicker_change(self, **event_args):
-    try:
-        deadline_validator.validate(self.my_deadline.value)
-        self.my_label.text = ""
-    except ValidationError as error:
-        self.my_label.text = str(error)
+    # Some other code
+
+    def my_datepicker_change(self, **event_args):
+        try:
+            deadline_validator.validate(self.my_deadline.value)
+            self.my_label.text = ""
+        except ValidationError as error:
+            self.my_label.text = str(error)
 ```
 The `validate(value, *args, **kwargs)` method calls the lambda function defined earlier. 
 The validation function is not limited to a single parameter. You can define an arbitrary 
@@ -276,20 +278,22 @@ text_length_validator = LengthValidator(
     my_context_var = "my context"
 )
 
-# Some other code
+class EditTextForm(EditTextTemplate):
 
-def validate_form(self, save: bool):
-    try:
-        text_length_validator.validate(self.my_text.text, save)
-        self.my_label.text = ""
-    except ValidationError as error:
-        self.my_label.text = str(error)
+    # Some other code
 
-def on_text_area_lost_focus(self, **event_args):
-    self.validate_form(False)
+    def validate_form(self, save: bool):
+        try:
+            text_length_validator.validate(self.my_text.text, save)
+            self.my_label.text = ""
+        except ValidationError as error:
+            self.my_label.text = str(error)
 
-def on_save_button(self, **event_args):
-    self.validate_form(True)
+    def on_text_area_lost_focus(self, **event_args):
+        self.validate_form(False)
+
+    def on_save_button(self, **event_args):
+        self.validate_form(True)
 ```
 The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
 The next two parameters denote the error message ids for a text that is either too short
