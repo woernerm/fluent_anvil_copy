@@ -1,5 +1,5 @@
 # Fluent Anvil
-This library makes it easy to serve high-quality translated and localized versions of your [Anvil](https://anvil.works/) app. You can make your app appeal to and accessible for everyone. All you need to do is add it as a third party dependency with the token UHLC7WE6TELL25TO . You do not need to download this repository unless you want to contribute (you are welcome to do so) or want to know how it works. 
+This library makes it easy to serve high-quality translated and localized versions of your [Anvil](https://anvil.works/) app. You can make your app appeal to and accessible for everyone. All you need to do is add it as a third-party dependency with the token UHLC7WE6TELL25TO . You do not need to download this repository unless you want to contribute (you are welcome to do so) or want to know how it works. 
 
 The library serves as a Python interface to [Fluent](https://projectfluent.org/). It is a localization system developed by Mozilla for natural-sounding translations. In contrast to gettext you can create more nuanced and natural sounding translations. For example, Polish has more plural forms than English or German. Therefore, selecting the right translation requires knowing how many there are of something. With localization systems like gettext, this requires adding additional logic inside your application. With Fluent, this language-specific logic is encapsulated in the translation file and does not impact other translations.
 
@@ -48,7 +48,7 @@ Now, you can configure Fluent using the following (we ignore the preferred local
 ```py
 fluent.configure(["es-MX"], "localization/{locale}/main.ftl")
 ```
-This will tell fluent to use the Mexican Spanish locale. The first parameter is a list of desired locales. Locales are given in the order of preference (most preferable first). This means, Fluent will always try the first locale in the list when trying to find a translation. If a translation is not available for that locale, Fluent will try the others one after another until a suitable translation has been found. The second parameter is a template string indicating where the translation files are stored. The placeholder {locale} is replaced with the desired locale (hyphens converted to underscore, because Anvil does not allow hyphens in directory names). Generally, all methods of the `fluent` Python object accept locales regardless of whether you use hyphens or underscores. Note that you do not have to provide the full URL starting with `./_/theme/`. It will be prepended automatically. If your translation files are stored somewhere else entirely you can explicitly set the prefix by adding it to the end of the parameter list. The template string in the above example is actually the default. So, if you store your translations files in the way outlined above, you can omitt it. In this case, the call becomes simply:
+This will tell fluent to use the Mexican Spanish locale. The first parameter is a list of desired locales. Locales are given in the order of preference (most preferable first). This means, Fluent will always try the first locale in the list when trying to find a translation. If a translation is not available for that locale, Fluent will try the others one after another until a suitable translation has been found. The second parameter is a template string indicating where the translation files are stored. The placeholder {locale} is replaced with the desired locale (hyphens converted to underscore, because Anvil does not allow hyphens in directory names). Generally, all methods of the `fluent` Python object accept locales regardless of whether you use hyphens or underscores. Note that you do not have to provide the full URL starting with `./_/theme/`. It will be prepended automatically. If your translation files are stored somewhere else entirely you can explicitly set the prefix by adding it to the end of the parameter list. The template string in the above example is actually the default. So, if you store your translations files in the way outlined above, you can omit it. In this case, the call becomes simply:
 ```py
 fluent.configure(["es-MX"])
 ```
@@ -138,7 +138,7 @@ translated_options = fluent.format_table(options, ["key"], my_contenxt_var = "my
 ```
 The second parameter is a list of keys to translate. Fluent-Anvil assumes that the value of every given key
 represents a Fluent message id. Other keys and their values will not be touched and returned as-is.
-Context variables can be provided as keyworded arguments or omitted completely. For example,
+Context variables can be provided as keyworded arguments or omited completely. For example,
 consider you selected "de_DE" as locale and had someone provide you with the corresponding .ftl
 file, the result might look like this:
 
@@ -188,7 +188,7 @@ deadline_validator = Validator(
 The Validator initialization method only requires two parameters:
 * A function that returns True, if the value to be validated passed the validation test. False, otherwise. Alternatively,
 it may also be a [Zod validator from Anvil Extras](https://anvil-extras.readthedocs.io/en/latest/guides/modules/zod.html).
-* A Fluent message id that represents an explainatory message to the user if validation fails.
+* A Fluent message id that represents an explanatory message to the user if validation fails.
 
 In the Form class of the Anvil app, we can define a change event for the datepicker in which validation
 is performed:
@@ -266,7 +266,7 @@ changing the role of a component (e.g. to highlight the text box for which
 validation failed), use `my_validator.validate(value, *args, **kwargs)` in a 
 try...except block as shown in the first example.
 
-### Predefined Validatiors
+### Predefined Validators
 Some validation tasks occur more often than others. In this section, some predefined
 classes for validation will be presented. Over time, this section may grow.
 
@@ -319,4 +319,4 @@ during filling. If it is about to be saved, the minimum length requirement shoul
 set to False) then the minimum length requirement shall only be enforced, if 
 the user has already written something. This is useful to avoid displaying an error
 message although the user may have skipped the text field intentionally for now. If 
-minimum length shall always be enforced, just omitt the second parameter.
+minimum length shall always be enforced, just omit the second parameter.
