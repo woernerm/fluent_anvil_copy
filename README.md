@@ -284,6 +284,13 @@ def on_text_area_lost_focus(self, **event_args):
         self.my_label.text = ""
     except ValidationError as error:
         self.my_label.text = str(error)
+
+def on_save_button(self, **event_args):
+    try:
+        text_length_validator.validate(self.my_text.text, True)
+        self.my_label.text = ""
+    except ValidationError as error:
+        self.my_label.text = str(error)
 ```
 The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
 The next two parameters denote the error message ids for a text that is either too short
