@@ -194,6 +194,7 @@ In the Form class of the Anvil app, we can define a change event for the datepic
 is performed:
 
 ```py
+from ._anvil_designer import EditDateTemplate
 from fluent_anvil.lib import ValidationError
 
 class EditDateForm(EditDateTemplate):
@@ -239,12 +240,15 @@ keyworded arguments.
 
 Validator objects are callable. This is useful, if you do not want to throw an exception:
 ```py
+from ._anvil_designer import EditDateTemplate
 from fluent_anvil.lib import ValidationError
 
-# Some other code
+class EditDateForm(EditDateTemplate):
 
-def my_datepicker_change(self, **event_args):
-    self.my_label.text = deadline_validator(self.my_deadline.value, "")
+    # Some other code
+
+    def my_datepicker_change(self, **event_args):
+        self.my_label.text = deadline_validator(self.my_deadline.value, "")
 ```
 If the provided value passes validation, the given default value is returned (usually 
 an empty string, None or some other special value). Otherwise, the translated error 
@@ -267,7 +271,9 @@ The `LengthValidator` class is useful for validating data that supports `len()`.
 Primarily, it is intended to validate that some text is neither too short nor too long.
 However, you can use it for lists and tuples just as well.
 ```py
+from ._anvil_designer import EditTextTemplate
 from fluent_anvil.lib import LengthValidator
+
 min_length = 10
 max_length = 120
 
