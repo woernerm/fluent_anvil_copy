@@ -260,7 +260,7 @@ try...except block as shown in the first example.
 Some validation tasks occur more often than others. In this section, some predefined
 classes for validation will be presented. Over time, this section may grow.
 
-#### Length Validator
+#### LengthValidator
 The `LengthValidator` class is useful for validating data that supports `len()`. 
 Primarily, it is intended to validate that some text is neither too short nor too long.
 However, you can use it for lists and tuples just as well.
@@ -285,13 +285,13 @@ def my_text_change(self, **event_args):
     except ValidationError as error:
         self.my_label.text = str(error)
 ```
-The first two parameters denote the minimum and maximum length of the text, respectively.
-The next two parameters denote the error message ids for a text that is too short
+The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
+The next two parameters denote the error message ids for a text that is either too short
 and a text that is too long. Finally, keyworded context variables can be defined as
 usual. In case you do not need to validate the minimum or maximum length, you can set
 the corresponding parameter to None. Validation will then always succeed for that
 characteristic.
-The `validate()` function and __call__ dunder have an optional second parameter that
+The `validate()` function and `__call__` dunder have an optional second parameter that
 determines whether the minimum length is enforced. This is useful if enforcing the
 minimum length depends on whether the form is about to be saved or just validated
 during filling. If it is saved, the minimum length requirement should be enforced
