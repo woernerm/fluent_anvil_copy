@@ -287,7 +287,7 @@ def my_text_change(self, **event_args):
 ```
 The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
 The next two parameters denote the error message ids for a text that is either too short
-and a text that is too long. Finally, keyworded context variables can be defined as
+and a text that is too long. Finally, keyworded context variables can be added as
 usual. In case you do not need to validate the minimum or maximum length, you can set
 the corresponding parameter to None. Validation will then always succeed for that
 characteristic.
