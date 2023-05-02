@@ -298,6 +298,5 @@ during filling. If it is about to be saved, the minimum length requirement shoul
 (set second parameter to True). If the user will continue to draft the form (second parameter
 set to False) then the minimum length requirement shall only be enforced, if 
 the user has already written something. This is useful to avoid displaying an error
-message to the user although the user did not fill in anything yet. This should only
-happen if the form is about to be saved. If minimum length shall always be enforced,
-just omitt the second parameter.
+message although the user may intentionally want to skip the text field for now. If 
+minimum length shall always be enforced, just omitt the second parameter.
