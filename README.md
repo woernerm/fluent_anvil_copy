@@ -294,8 +294,10 @@ characteristic.
 The `validate()` function and `__call__` dunder have an optional second parameter that
 determines whether the minimum length is enforced. This is useful if enforcing the
 minimum length depends on whether the form is about to be saved or just validated
-during filling. If it is saved, the minimum length requirement should be enforced
-(set second parameter to True). If the form is still being drafted (second parameter
+during filling. If it is about to be saved, the minimum length requirement should be enforced
+(set second parameter to True). If the user will continue to draft the form (second parameter
 set to False) then the minimum length requirement shall only be enforced, if 
-the user has already written something. If minimum length shall always be enforced,
+the user has already written something. This is useful to avoid displaying an error
+message to the user although the user did not fill in anything yet. This should only
+happen if the form is about to be saved. If minimum length shall always be enforced,
 just omitt the second parameter.
