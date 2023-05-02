@@ -197,6 +197,8 @@ is performed:
 from ._anvil_designer import EditDateTemplate
 from fluent_anvil.lib import ValidationError
 
+# Some other code like the definition of deadline_validator.
+
 class EditDateForm(EditDateTemplate):
 
     # Some other code
@@ -242,6 +244,8 @@ Validator objects are callable. This is useful, if you do not want to throw an e
 ```py
 from ._anvil_designer import EditDateTemplate
 from fluent_anvil.lib import ValidationError
+
+# Some other code like the definition of deadline_validator.
 
 class EditDateForm(EditDateTemplate):
 
