@@ -22,6 +22,25 @@ The translation happens entirely on the client side. Therefore, it works on [Anv
 Please note that this is a personal project with the hope that it may be of use to others as well. I am neither affiliated with [Project Fluent](https://projectfluent.org/) nor [Anvil](https://anvil.works/).
 
 ## Quick Guide
+### IETF language tags
+Languages can come in many variants. For example, English is spoken an written slightly depending on where you are. There is Brittish English, 
+Canadian English, American English, and many others. In order to identify these languages in the Internet, standardized codes are used, e.g. "en-US"
+identifies English as spoken in the United States and "zh-Hant-HK" identifies Traditional Chinese as used in Hong Kong. Such a code is called 
+[IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). These tags are composed of subtags identifying the primary language 
+(e.g. "en" for english), the regional variant of a language (e.g. "US" for United States), the script (e.g. "Latn" for Latin or "Taml" for Tamil), 
+and others aspects that make up a specific language variant. 
+Apart from the primary language tag, all other tags are optional and should be used only to add distinguishing information for your translation. The tags
+are there to serve YOUR needs. For example, if you live in Switzerland and only intend to provide a single German version of your app, you can just as well use "de" as the
+only tag to describe that locale. If your app is then used by people from Germany and Austria as well and you want to provide them with separate translations,
+you can denote your translations with de-
+For
+example, you should not add the script for languages such as Spanish or German, because they are expected to be written in Latin script. Likewise, 
+you do not need to highlight the region (e.g. "de-DE" for German as spoken in Germany) if you only have 
+
+You can find a great explaination by the World Wide Web Consortium 
+[here](https://www.w3.org/International/articles/language-tags/). 
+
+
 In Anvil's assets section, add a directory to place your translations in, ideally you have one subfolder for each locale, e.g.
 - localization
      - es_MX
@@ -30,6 +49,9 @@ In Anvil's assets section, add a directory to place your translations in, ideall
          - main.ftl
      - de_DE
          - main.ftl
+
+
+
 
 With Fluent, you can use variables for placeholders or selecting the appropriate translation. In the following example we are going to greet the user. Therefore, we use a variable as a placeholder for the user's name. Assume that the content of es_MX/main.ftl is: 
 `hello = Hola { $name }.`
@@ -305,12 +327,12 @@ class EditTextForm(EditTextTemplate):
     def on_save_button(self, **event_args):
         self.validate_form(True)
 ```
-The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum length of the text, respectively.
-The next two parameters denote the error message ids for a text that is either too short
-and a text that is too long. Finally, keyworded context variables can be added as
-usual. In case you do not need to validate the minimum or maximum length, you can set
-the corresponding parameter to None. Validation will then always succeed for that
-characteristic.
+The first two parameters of `LengthValidator.__init__()` denote the minimum and maximum 
+length of the text, respectively. The next two parameters denote the error message ids 
+for a text that is either too short and a text that is too long. Finally, keyworded 
+context variables can be added as usual. In case you do not need to validate the minimum 
+or maximum length, you can set the corresponding parameter to None. Validation will then 
+always succeed for that characteristic.
 The `validate()` function and `__call__` dunder have an optional second parameter that
 determines whether the minimum length is enforced. This is useful if enforcing the
 minimum length depends on whether the form is about to be saved or just validated
@@ -320,3 +342,5 @@ set to False) then the minimum length requirement shall only be enforced, if
 the user has already written something. This is useful to avoid displaying an error
 message although the user may have skipped the text field intentionally for now. If 
 minimum length shall always be enforced, just omit the second parameter.
+
+### IETF language tags
