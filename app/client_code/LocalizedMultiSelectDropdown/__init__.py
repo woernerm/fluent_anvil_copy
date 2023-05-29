@@ -1,3 +1,7 @@
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
 # SPDX-License-Identifier: MIT
 #
 # Copyright (c) 2021 The Anvil Extras project team members listed at
@@ -280,12 +284,14 @@ def _option_from_dict(item: dict, idx: int) -> tuple:
     tokens = repr(item.get("tokens", ""))
     icon = repr(item.get("icon", "")).replace(":", "-")
     subtext = repr(item.get("subtext", ""))
+    content = repr(item.get("content", ""))
     disabled = not item.get("enabled", True)
 
     option = f"""<option {'disabled' if disabled else ''}
                         {f'data-icon={icon}' if icon else ''}
                         {f'data-subtext={subtext}' if subtext else ''}
                         {f'data-tokens={tokens}' if tokens else ''}
+                        {f'data-content={content}' if content else ''}
                         {f'title={title}' if title else ''}
                         value={idx}>
                         {item.get('key')}

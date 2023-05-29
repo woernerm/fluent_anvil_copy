@@ -68,6 +68,40 @@ export function get_user_locales(fallback){
 }
 
 /**
+ * Interface to Intl.DisplayNames class. It is used to return the names of the given 
+ * locales (e.g. "en-US", "US", "en", etc.), scripts, currencies, etc in the given 
+ * locale. This is useful to create a translated language, currency or region selection.
+ * 
+ * @param {string} codes - List of identifiers to translate.
+ * @param {string} locale - The locale to translate to.
+ * @param {string} type - The type ("language", "region", "currency") to translate.
+ * @param {string} style - The style ("long", "short", "narrow") to translate.
+ * @param {string} language - The way of phrasing the translation e.g. British English 
+ * or English (United Kingdom).
+ * @returns {list} - Returns the translation of the given code in the given locale.
+ */
+export function get_display_name(codes, locales, type, language = "dialect", style = "long"){
+  const opts = {type: type, style: style, languageDisplay: language, fallback: "none"};
+  const translation = new Intl.DisplayNames(locales, opts);
+  return codes.map(cd => translation.of(cd));
+}
+
+/**
+ * Interface to Intl.DisplayNames class. It is used to return the names of the locales
+ * that are supported on the client's machine, i.e. those for which there is a display
+ * name available. If locales are given, a subset of this list is returned that is
+ * supported.
+ * 
+ * @param {string} locales - List of locales to test for support. Null if all supported
+ * locales shall be returned.
+ * @returns {list} - Returns a list of all supported locales or a subset of the given
+ * locales that are supported on the client's machine.
+ */
+export function get_supported_locales(locales){
+  return Intl.DisplayNames.supportedLocalesOf(locales, {"localeMatcher": "lookup"})
+}
+
+/**
  * Initialize fluent translation system.
  * @param {string} resource_path_template - URL template to the .ftl files. Use the
  * placeholder {locale} for inserting the desired locale. Since Anvil does not support

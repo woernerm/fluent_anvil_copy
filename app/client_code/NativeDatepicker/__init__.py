@@ -1,5 +1,9 @@
 from ._anvil_designer import NativeDatepickerTemplate
 from anvil import *
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
 import anvil.js
 from datetime import datetime
 from anvil.tz import tzlocal

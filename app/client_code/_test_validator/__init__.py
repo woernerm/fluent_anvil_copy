@@ -1,5 +1,9 @@
 from ._anvil_designer import _test_validatorTemplate
 from anvil import *
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
 from ..fluent import fluent, Message
 from ..validators import Validator
 

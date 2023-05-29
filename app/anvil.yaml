@@ -1,8 +1,15 @@
+scheduled_tasks:
+- task_name: task_update_subtag_registry
+  time_spec:
+    n: 2
+    every: minute
+    at: {}
+  job_id: HVRVLPUJ
 services:
 - source: /runtime/services/tables.yml
-  client_config: {}
+  client_config: {enable_v2: true}
   server_config: {}
-startup: {type: form, module: _test_localizedmultiselectdropdown}
+startup: {type: form, module: _test_validator}
 package_name: fluent_anvil
 allow_embedding: false
 name: fluent_anvil
@@ -11,3 +18,18 @@ runtime_options: {version: 2, client_version: '3', server_version: python3-sandb
 metadata: {title: Fluent Anvil}
 startup_form: null
 native_deps: {head_html: ''}
+db_schema:
+  fluent_subtag_registry:
+    client: search
+    server: full
+    columns:
+    - name: type
+      admin_ui: {order: 1, width: 200}
+      type: string
+    - name: subtags
+      admin_ui: {order: 1, width: 200}
+      type: simpleObject
+    - name: updated_on
+      admin_ui: {order: 2, width: 200}
+      type: datetime
+    title: fluent_subtag_registry

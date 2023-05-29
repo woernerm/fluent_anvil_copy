@@ -1,6 +1,10 @@
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
 import anvil.js
 from fluent_anvil.message import Message 
-
+from .registries import LocalSubtagRegistry
 
 class __Fluent:
     """Anvil interface for fluent and some convenience functions.
@@ -22,6 +26,13 @@ class __Fluent:
         that will be iterated through if the given message id is not available
         for the "es_MX" locale.
     """
+
+    STYLE_DIALECT_NARROW = ("dialect", "narrow",)
+    STYLE_DIALECT_SHORT = ("dialect", "short",)
+    STYLE_DIALECT_LONG = ("dialect", "long",)
+    STYLE_STANDARD_NARROW = ("standard", "narrow",)
+    STYLE_STANDARD_SHORT = ("standard", "short",)
+    STYLE_STANDARD_LONG = ("standard", "long",)
 
     class __JSInterface:
         """The JavaScript library that is used to interface with fluent creates a
@@ -79,7 +90,9 @@ class __Fluent:
         language tags. Therefore, replace any underscores with hyphens. The JavaScript 
         library will switch to underscore again when loading the assets.
         """
-        return locale.replace("_", "-")
+        if isinstance(locale, str):
+            return locale.replace("_", "-")
+        return [cls._clean_locale(e) for e in locale]
 
     def __init__(
         self,
@@ -105,6 +118,7 @@ class __Fluent:
                 This is meant as a convenience for novice users and reduce typing
                 effort.
         """
+        self._js = None
         self.configure(locales, path_template, path_prefix)
 
     def set_locale(self, locales: list):
@@ -148,18 +162,26 @@ class __Fluent:
         
         if not locales:
             self._locales = None
-            self.js = None
+            self._js = None
         else:
             self._locales = [locales] if isinstance(locales, str) else locales
             self._locales = [self._clean_locale(e) for e in self._locales]
     
-            self.js = self.__JSInterface(
+            self._js = self.__JSInterface(
                 self._path_template, 
                 self._locales[0], 
                 self._locales[1:] if len(self._locales) > 1 else [], 
                 self._path_prefix
             )
 
+    @property
+    def js(self):
+        if not self._js:
+            if self._path_template and not self._locales:
+                raise RuntimeError("No locale is set. You need to call fluent.set_locale() with a valid locale first.")
+            raise RuntimeError("Fluent is not configured, yet. You need to call fluent.configure() first.")
+        return self._js
+    
     @classmethod
     def get_preferred_locales(cls, fallback: str = None) -> list:
         """Return the user's preferred locales.
@@ -181,10 +203,6 @@ class __Fluent:
 
     def _translate(self, messages):
         """Sends the given message instances to the javascript fluent library."""
-
-        if not self.js:
-            raise RuntimeError("Fluent is not configured, yet.")
-
         translations = self.js.localization.formatValues([e.tofluent() for e in messages])
 
         if not translations and messages:
@@ -248,10 +266,6 @@ class __Fluent:
         Returns: A translation string in case a string message id is given. If Message 
             instances are given, a list of translations in the same order.
         """
-
-        if not self.js:
-            raise RuntimeError("Fluent is not configured, yet.")
-
         # If a string is given, translate a single value.
         if isinstance(message, str):
             if args:
@@ -317,6 +331,116 @@ class __Fluent:
             return {col: get_value(col, value) for col, value in line.items()}
 
         return [get_translated_line(line) for line in data]
+
+    def _get_display_name(self, code: list, typename: str, style: tuple):
+        """ Translate the given code using JavaScript.
+
+        Args:
+            codes: List of identifiers or single identifier string to translate.
+            type: The type ("language", "region", "currency") to translate.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+        """            
+        select = lambda n, c: n if n and n.lower() != c.lower() else None
+        
+        codes = [code] if isinstance(code, str) else code
+        try:
+            names = self.js.module.get_display_name(codes, self._locales, typename, *style)
+        except anvil.js.ExternalError as err:
+            if err.original_error.name.lower() == "rangeerror":
+                return None
+            raise err
+            
+        names = [select(name, code[i]) for i, name in enumerate(names)]
+        return names[0] if isinstance(code, str) else names        
+
+    def _get_options(self, displaytype:str, typename: str, style = STYLE_DIALECT_LONG, translatable_only: bool = True) -> dict:
+        registry = LocalSubtagRegistry(True).get_tags(typename)
+        tags = list(registry.keys()) if isinstance(registry, dict) else registry
+        transl = self._get_display_name(tags, displaytype, style)
+        if not translatable_only:
+            # Find entries that were not translated and use the default english fallback.
+            transl = [transl[i] if transl[i] else registry[t] for i, t in enumerate(tags)]
+            return {tags[i]: trs for i, trs in enumerate(transl)}
+        return {tags[i]: trs for i, trs in enumerate(transl) if trs}
+
+    def get_locale_name(self, locale, style = STYLE_DIALECT_LONG):
+        """Returns the translated name of the given locale(s).
+
+        The name of the given locale is returned in the language fluent has
+        been configured for.
+
+        Args:
+            locale: The locale or list of locales to get the translated name for.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+        """
+        cleaned_locale = self._clean_locale(locale)
+        return self._get_display_name(cleaned_locale, "language", style)
+
+    def get_region_name(self, code, style = STYLE_DIALECT_LONG):
+        """Returns the translated name of the given regions(s).
+
+        The name of the given region code is returned in the language fluent has
+        been configured for.
+
+        Args:
+            code: The region code (e.g. "AT", "US", "GB", etc.) or list of 
+                region codes to get the translated name for.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+        """
+        cd = code.upper() if isinstance(code, str) else [e.upper() for e in code]
+        return self._get_display_name(cd, "region", style)
+
+    def get_currency_name(self, code, style = STYLE_DIALECT_LONG):
+        """Returns the translated name of the given currency / currencies.
+
+        The name of the given currency code (e.g. "USD", "EUR") is returned in 
+        the language fluent has been configured for.
+
+        Args:
+            code: The currency code (e.g. "USD", "EUR", "CNY", etc.) or list of 
+                currency codes to get the translated name for.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+        """
+        return self._get_display_name(code, "currency", style)
+
+    def get_script_name(self, code, style = STYLE_DIALECT_LONG):
+        """Returns the translated name of the given script(s).
+
+        The name of the given script code is returned in the language fluent has
+        been configured for.
+
+        Args:
+            code: The script code (e.g. "Arab", "Latn", etc.) or list of 
+                script codes to get the translated name for.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+        """
+        cd = code.capitalize() if isinstance(code, str) else [e.capitalize() for e in code]
+        return self._get_display_name(cd, "script", style) 
+
+    def get_region_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        return self._get_options("region", "region", style, translatable_only)
+
+    def get_language_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        return self._get_options("language", "language", style, translatable_only)
+
+    def get_script_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        return self._get_options("script", "script", style, translatable_only)
+
+    def get_locale_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        return self._get_options("language", "locale", style, translatable_only)
+        
     
+        
+        
 
 fluent = __Fluent(None, "localization/{locale}/main.ftl")

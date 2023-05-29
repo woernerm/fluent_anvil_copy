@@ -1,11 +1,16 @@
 from ._anvil_designer import _test_formatTemplate
 from anvil import *
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
 from ..fluent import fluent, Message as M
 
 from datetime import timedelta
+from .._test import TestCase
 
 
-class _test_format(_test_formatTemplate):
+class _test_format(_test_formatTemplate, TestCase):
     def __init__(self, **properties):
         self.label.text = "hello"
         # Set Form properties and Data Bindings.
@@ -18,8 +23,7 @@ class _test_format(_test_formatTemplate):
 
         fluent.configure(["es_MX", "en_US"], "test_localization/{locale}/main.ftl")
         
-        print(fluent.format("hello"))
-        print(fluent.format("hello", name="John"))
+        fluent.format("hello", name="John")
         print(fluent.format("time-elapsed", duration=12342423.234 ))
 
         fluent.set_locale("en_US")
@@ -45,9 +49,6 @@ class _test_format(_test_formatTemplate):
             M(self.label, "text", "hello", name="John"),
             M(self.text, "placeholder", "hello", name="John")
         )
-
-        print(fluent.js.dom_localization)
-        print(fluent.js.localization)
 
         fluent_hyphen = fluent.configure(["en-US", "es-MX"], "test_localization/{locale}/main.ftl")
         print("hyphen: ", fluent.format("hello"))
