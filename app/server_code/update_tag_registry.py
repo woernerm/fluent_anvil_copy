@@ -51,6 +51,14 @@ def task_update_subtag_registry():
     translated = {key: cldr.format(key) for key in locales}
     translated = {k: v for k,v in translated.items() if v is not None}
     local_reg.update_or_create("locale", translated, updated_on)
+
+
+    ## Update currency registry
+    CURRENCY_FILE = "cldr-json/cldr-numbers-full/main/en/currencies.json"
+    file = CLDRFile(CURRENCY_FILE)
+    currencies = file.drill("main", "en", "numbers", "currencies")
+    currencies = {k: v.get("displayName", None) for k, v in currencies.items()}
+    local_reg.update_or_create("currency", currencies, updated_on)
     
 @anvil.server.callable
 def launch_registry_update():

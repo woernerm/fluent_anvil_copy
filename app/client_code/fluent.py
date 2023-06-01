@@ -356,19 +356,6 @@ class __Fluent:
         return names[0] if isinstance(code, str) else names        
 
     def _get_options(self, displaytype:str, typename: str, style = STYLE_DIALECT_LONG, translatable_only: bool = True) -> dict:
-        """Return the options available for the given type.
-
-        Args:
-            displaytype: The type ("language", "region", "currency") to translate the
-                options to.
-            typename: The type of entry in the database to load.
-            style: Style constant. Can be one of the following:
-                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
-                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
-            translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.        
-        """
         registry = LocalSubtagRegistry(True).get_tags(typename)
         tags = list(registry.keys()) if isinstance(registry, dict) else registry
         transl = self._get_display_name(tags, displaytype, style)
@@ -467,15 +454,17 @@ class __Fluent:
         return self._get_options("language", "language", style, translatable_only)
 
     def get_script_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return all known script subtags and their translations as dictionary.
+        """Return the translated name of the given script(s).
 
-        style: Style constant to determine the style of the translation. Can be one of 
-            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
-            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
-            STYLE_STANDARD_NARROW. 
-        translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.      
+        The name of the given script code is returned in the language fluent has
+        been configured for.
+
+        Args:
+            code: The script code (e.g. "Arab", "Latn", etc.) or list of 
+                script codes to get the translated name for.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
         """
         return self._get_options("script", "script", style, translatable_only)
 
@@ -491,5 +480,22 @@ class __Fluent:
                 will show up in English.      
         """
         return self._get_options("language", "locale", style, translatable_only)
+
+    def get_currency_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        """Return common currencies from CLDR and their translations as dictionary.
+
+        style: Style constant to determine the style of the translation. Can be one of 
+            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
+            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
+            STYLE_STANDARD_NARROW. 
+        translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.      
+        """
+        return self._get_options("currency", "currency", style, translatable_only)
+        
+    
+        
+        
 
 fluent = __Fluent(None, "localization/{locale}/main.ftl")
