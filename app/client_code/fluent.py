@@ -333,7 +333,7 @@ class __Fluent:
         return [get_translated_line(line) for line in data]
 
     def _get_display_name(self, code: list, typename: str, style: tuple):
-        """ Translate the given code using JavaScript.
+        """Translate the given code using JavaScript.
 
         Args:
             codes: List of identifiers or single identifier string to translate.
@@ -356,6 +356,19 @@ class __Fluent:
         return names[0] if isinstance(code, str) else names        
 
     def _get_options(self, displaytype:str, typename: str, style = STYLE_DIALECT_LONG, translatable_only: bool = True) -> dict:
+        """Return the options available for the given type.
+
+        Args:
+            displaytype: The type ("language", "region", "currency") to translate the
+                options to.
+            typename: The type of entry in the database to load.
+            style: Style constant. Can be one of the following:
+                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
+            translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.        
+        """
         registry = LocalSubtagRegistry(True).get_tags(typename)
         tags = list(registry.keys()) if isinstance(registry, dict) else registry
         transl = self._get_display_name(tags, displaytype, style)
@@ -366,7 +379,7 @@ class __Fluent:
         return {tags[i]: trs for i, trs in enumerate(transl) if trs}
 
     def get_locale_name(self, locale, style = STYLE_DIALECT_LONG):
-        """Returns the translated name of the given locale(s).
+        """Return the translated name of the given locale(s).
 
         The name of the given locale is returned in the language fluent has
         been configured for.
@@ -381,7 +394,7 @@ class __Fluent:
         return self._get_display_name(cleaned_locale, "language", style)
 
     def get_region_name(self, code, style = STYLE_DIALECT_LONG):
-        """Returns the translated name of the given regions(s).
+        """Return the translated name of the given regions(s).
 
         The name of the given region code is returned in the language fluent has
         been configured for.
@@ -397,7 +410,7 @@ class __Fluent:
         return self._get_display_name(cd, "region", style)
 
     def get_currency_name(self, code, style = STYLE_DIALECT_LONG):
-        """Returns the translated name of the given currency / currencies.
+        """Return the translated name of the given currency / currencies.
 
         The name of the given currency code (e.g. "USD", "EUR") is returned in 
         the language fluent has been configured for.
@@ -412,7 +425,7 @@ class __Fluent:
         return self._get_display_name(code, "currency", style)
 
     def get_script_name(self, code, style = STYLE_DIALECT_LONG):
-        """Returns the translated name of the given script(s).
+        """Return the translated name of the given script(s).
 
         The name of the given script code is returned in the language fluent has
         been configured for.
@@ -428,19 +441,55 @@ class __Fluent:
         return self._get_display_name(cd, "script", style) 
 
     def get_region_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        """Return all known region subtags and their translations as dictionary.
+
+        style: Style constant to determine the style of the translation. Can be one of 
+            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
+            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
+            STYLE_STANDARD_NARROW. 
+        translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.      
+        """
         return self._get_options("region", "region", style, translatable_only)
 
     def get_language_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        """Return all known language subtags and their translations as dictionary.
+
+        style: Style constant to determine the style of the translation. Can be one of 
+            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
+            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
+            STYLE_STANDARD_NARROW. 
+        translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.      
+        """
         return self._get_options("language", "language", style, translatable_only)
 
     def get_script_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        """Return all known script subtags and their translations as dictionary.
+
+        style: Style constant to determine the style of the translation. Can be one of 
+            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
+            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
+            STYLE_STANDARD_NARROW. 
+        translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.      
+        """
         return self._get_options("script", "script", style, translatable_only)
 
     def get_locale_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
+        """Return common locales from CLDR and their translations as dictionary.
+
+        style: Style constant to determine the style of the translation. Can be one of 
+            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
+            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
+            STYLE_STANDARD_NARROW. 
+        translatable_only: If True, only the entries that the user's browser was
+                able to translate will be returned. If False, untranslatable entries
+                will show up in English.      
+        """
         return self._get_options("language", "locale", style, translatable_only)
-        
-    
-        
-        
 
 fluent = __Fluent(None, "localization/{locale}/main.ftl")
