@@ -112,6 +112,17 @@ omit it. In this case, the call becomes simply:
 ```py
 fluent.configure(["es-MX"])
 ```
+It makes sense to structure your translations into multiple files (e.g. you could have
+a separate file for each form). You can provide path templates to all .ftl files as
+a list:
+```py
+files = [
+    "localization/{locale}/main.ftl",
+    "localization/{locale}/profile_settings.ftl",
+    "localization/{locale}/my_subform.ftl"
+]
+fluent.configure(["es-MX"], files)
+```
 
 Now, you can greet the user:
 ```py

@@ -21,9 +21,15 @@ class _test_format(_test_formatTemplate, TestCase):
         print("Preferred:", fluent.get_preferred_locales())
         print("Preferred:", fluent.get_preferred_locales("en_US"))
 
-        fluent.configure(["es_MX", "en_US"], "test_localization/{locale}/main.ftl")
+        files = [
+            "test_localization/{locale}/main.ftl",
+            "test_localization/{locale}/extras.ftl"
+        ]
+
+        fluent.configure(["es_MX", "en_US"], files)
         
-        fluent.format("hello", name="John")
+        print(fluent.format("hello", name="John"))
+        print(fluent.format("my-unique-translation"))
         print(fluent.format("time-elapsed", duration=12342423.234 ))
 
         fluent.set_locale("en_US")

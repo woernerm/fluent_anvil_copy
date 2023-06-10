@@ -1,3 +1,4 @@
+import 'intl-pluralrules'
 import { Localization, DOMLocalization } from "@fluent/dom";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { getUserLocales } from 'get-user-locale';
@@ -5,7 +6,7 @@ import { getUserLocales } from 'get-user-locale';
 /**
  * Load a fluent file for the given locale and url.
  * @param {string} locale - Locale as IETF language tag, e.g. "en-US".
- * @param {string} resourceId - URL template to .ftl file.
+ * @param {string} url - URL template to .ftl file.
  * @returns - Fluent resource.
  */
 async function fetch_resource(locale, resourceId) {
@@ -14,24 +15,27 @@ async function fetch_resource(locale, resourceId) {
     const response = await fetch(url);
     const text = await response.text();
     return new FluentResource(text);
-  }
+}
 
   /**
    * Create fluent bundle for the given locale and resource id. Also returns a list
    * of all errors encountered.
    * @param {string} locale - Locale as IETF language tag, e.g. "en-US".
-   * @param {string} resourceId - URL template to .ftl file.
+   * @param {string} urls - URL templates to .ftl files.
    * @param {object} errors - Container for all errors encountered during ftl parsing.
    * @returns {FluentBundle} - Fluent bundle.
    */
-async function create_bundle(locale, resourceId, errors) {
-    let resource = await fetch_resource(locale, resourceId);
+async function create_bundle(locale, urls, errors) {
     let bundle = new FluentBundle(locale);
-    errors.entries += bundle.addResource(resource);
+
+    for (const url of urls) {
+      let resource = await fetch_resource(locale, url);
+      errors.entries += bundle.addResource(resource);
+    }
 
     // Output errors, if any.
     for (const entry of errors.entries) {
-      console.log("Error creating bundle for locale " + locale + entry)
+      console.log("Error creating bundle for locale '" + locale + "':" + entry)
     }
     return bundle;
 }
@@ -45,11 +49,11 @@ async function create_bundle(locale, resourceId, errors) {
  * @returns - Generator function for returning a fluent bundle.
  */
 function create_bundle_generator(locale, fallback_locales, errors){
-    return async function* generate_bundles(resourceIds) {
-        yield await create_bundle(locale, resourceIds[0], errors);
+    return async function* generate_bundles(urls) {
+        yield await create_bundle(locale, urls, errors);
       
         for (const entry of fallback_locales) {
-          yield await create_bundle(entry, resourceIds[0], errors);
+          yield await create_bundle(entry, urls, errors);
         }
     }
 } 
@@ -103,7 +107,7 @@ export function get_supported_locales(locales){
 
 /**
  * Initialize fluent translation system.
- * @param {string} resource_path_template - URL template to the .ftl files. Use the
+ * @param {string} urls - URL templates to the .ftl files. Use the
  * placeholder {locale} for inserting the desired locale. Since Anvil does not support
  * hypthens in directory names, the placeholder will use underscores, e.g. "en_US".
  * @param {string} locale - Locale as IETF language tag, e.g. "en-US". 
@@ -112,7 +116,7 @@ export function get_supported_locales(locales){
  * instance. In addition, it also contains containers for all errors encountered during
  * intialization of both instances.
  */
-export function init_localization(resource_path_template, locale, fallback_locales){
+export function init_localization(urls, locale, fallback_locales){
   let dom_errors = {entries: []}
   let main_errors = {entries: []}  
   
@@ -121,14 +125,11 @@ export function init_localization(resource_path_template, locale, fallback_local
     
     
   // Activate DOM localization
-  const dom = new DOMLocalization(
-      [resource_path_template], 
-      dom_bundle_gen
-  );
+  const dom = new DOMLocalization(urls, dom_bundle_gen);
   dom.connectRoot(document.documentElement);
   dom.translateRoots(); 
 
-  const main = new Localization([resource_path_template], loc_bundle_gen)
+  const main = new Localization(urls, loc_bundle_gen)
 
   return {
     dom: dom, 

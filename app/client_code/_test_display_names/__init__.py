@@ -17,7 +17,7 @@ class _test_display_names(_test_display_namesTemplate, TestCase):
         # Set Form properties and Data Bindings.
         self.init_components(**properties)
 
-        fluent.configure(["en-US"], "test_localization/{locale}/main.ftl")
+        fluent.configure(["de-DE"], "test_localization/{locale}/main.ftl")
         print(fluent.get_currency_name("ISK"))
 
         self.assertEqual(fluent.get_locale_name("de-DE", fluent.STYLE_STANDARD_LONG), "Deutsch (Deutschland)")

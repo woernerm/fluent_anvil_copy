@@ -52,21 +52,25 @@ class __Fluent:
 
         def __init__(
             self,
-            path_template: str,
+            path_template,
             locale: str,
             fallback_locales: list = None,
             path_prefix: str = None,
         ):
             """Initialize Fluent's DOMLocalization and Localization object."""
-            
-            # Determine the path prefix and ensure it ends with a forward slash.
-            prefix = self.ASSET_URL if path_prefix is None else path_prefix
-            prefix = "" if path_template.startswith(prefix) else prefix
-            prefix = prefix if prefix.endswith("/") else f"{prefix}/"
+            path_prefix = self.ASSET_URL if path_prefix is None else path_prefix
+            def clean_template(template: str):
+                # Determine the path prefix and ensure it ends with a forward slash.
+                prefix = "" if template.startswith(path_prefix) else path_prefix
+                prefix = prefix if prefix.endswith("/") else f"{prefix}/"
+                return f"{prefix}{template}"
+                
+            path_template = [path_template] if isinstance(path_template, str) else path_template
+            path_template = [clean_template(t) for t in path_template]
 
             self.module = anvil.js.import_from(f"{self.ASSET_URL}{self.FLUENT_LIB}")
             fluent = self.module.init_localization(
-                f"{prefix}{path_template}", locale, fallback_locales
+                path_template, locale, fallback_locales
             )
             
             if fluent.dom_errors:
@@ -97,7 +101,7 @@ class __Fluent:
     def __init__(
         self,
         locales: list,
-        path_template: str,
+        path_template,
         path_prefix: str = None,
     ):
         """Initialize Fluent.
@@ -108,13 +112,13 @@ class __Fluent:
                 will work. The first given locale is the most preferred one while the
                 remaining locales will be used as fallback in case a translation cannot
                 be determined for the most preferred locale.
-            path_template: Template string to the .ftl files, e.g.
+            path_template: Template string or list of template strings to the .ftl files, e.g.
                 "localization/{locale}/main.ftl". You can only use the {locale}
                 placeholder. It will contain the locale with underscore, e.g. "de_DE"
                 instead of "de-DE", because Anvil does not support hyphens for
                 directory names.
             path_prefix: Prefix for the given path. Will be "./_/theme/" if not given.
-                The prefix will be prepended to path_template if not already present.
+                The prefix will be prepended to each path_template if not already present.
                 This is meant as a convenience for novice users and reduce typing
                 effort.
         """
@@ -135,7 +139,7 @@ class __Fluent:
     def configure(
             self, 
             locales: list,
-            path_template: str,
+            path_template,
             path_prefix: str = None,
     ):
         """Sets a all basic configuration options.
@@ -146,13 +150,13 @@ class __Fluent:
                 will work. The first given locale is the most preferred one while the
                 remaining locales will be used as fallback in case a translation cannot
                 be determined for the most preferred locale.
-            path_template: Template string to the .ftl files, e.g.
+            path_template: String or list of template strings to the .ftl files, e.g.
                 "localization/{locale}/main.ftl". You can only use the {locale}
                 placeholder. It will contain the locale with underscore, e.g. "de_DE"
                 instead of "de-DE", because Anvil does not support hyphens for
                 directory names.
             path_prefix: Prefix for the given path. Will be "./_/theme/" if not given.
-                The prefix will be prepended to path_template if not already present.
+                The prefix will be prepended to each path_template if not already present.
                 This is meant as a convenience for novice users and reduce typing
                 effort.
                   
@@ -333,7 +337,7 @@ class __Fluent:
         return [get_translated_line(line) for line in data]
 
     def _get_display_name(self, code: list, typename: str, style: tuple):
-        """Translate the given code using JavaScript.
+        """ Translate the given code using JavaScript.
 
         Args:
             codes: List of identifiers or single identifier string to translate.
@@ -366,7 +370,7 @@ class __Fluent:
         return {tags[i]: trs for i, trs in enumerate(transl) if trs}
 
     def get_locale_name(self, locale, style = STYLE_DIALECT_LONG):
-        """Return the translated name of the given locale(s).
+        """Returns the translated name of the given locale(s).
 
         The name of the given locale is returned in the language fluent has
         been configured for.
@@ -381,7 +385,7 @@ class __Fluent:
         return self._get_display_name(cleaned_locale, "language", style)
 
     def get_region_name(self, code, style = STYLE_DIALECT_LONG):
-        """Return the translated name of the given regions(s).
+        """Returns the translated name of the given regions(s).
 
         The name of the given region code is returned in the language fluent has
         been configured for.
@@ -397,7 +401,7 @@ class __Fluent:
         return self._get_display_name(cd, "region", style)
 
     def get_currency_name(self, code, style = STYLE_DIALECT_LONG):
-        """Return the translated name of the given currency / currencies.
+        """Returns the translated name of the given currency / currencies.
 
         The name of the given currency code (e.g. "USD", "EUR") is returned in 
         the language fluent has been configured for.
@@ -412,7 +416,7 @@ class __Fluent:
         return self._get_display_name(code, "currency", style)
 
     def get_script_name(self, code, style = STYLE_DIALECT_LONG):
-        """Return the translated name of the given script(s).
+        """Returns the translated name of the given script(s).
 
         The name of the given script code is returned in the language fluent has
         been configured for.
@@ -428,70 +432,18 @@ class __Fluent:
         return self._get_display_name(cd, "script", style) 
 
     def get_region_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return all known region subtags and their translations as dictionary.
-
-        style: Style constant to determine the style of the translation. Can be one of 
-            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
-            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
-            STYLE_STANDARD_NARROW. 
-        translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.      
-        """
         return self._get_options("region", "region", style, translatable_only)
 
     def get_language_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return all known language subtags and their translations as dictionary.
-
-        style: Style constant to determine the style of the translation. Can be one of 
-            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
-            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
-            STYLE_STANDARD_NARROW. 
-        translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.      
-        """
         return self._get_options("language", "language", style, translatable_only)
 
     def get_script_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return the translated name of the given script(s).
-
-        The name of the given script code is returned in the language fluent has
-        been configured for.
-
-        Args:
-            code: The script code (e.g. "Arab", "Latn", etc.) or list of 
-                script codes to get the translated name for.
-            style: Style constant. Can be one of the following:
-                STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
-                STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW. 
-        """
         return self._get_options("script", "script", style, translatable_only)
 
     def get_locale_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return common locales from CLDR and their translations as dictionary.
-
-        style: Style constant to determine the style of the translation. Can be one of 
-            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
-            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
-            STYLE_STANDARD_NARROW. 
-        translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.      
-        """
         return self._get_options("language", "locale", style, translatable_only)
 
     def get_currency_options(self, style = STYLE_DIALECT_LONG, translatable_only: bool = False) -> dict:
-        """Return common currencies from CLDR and their translations as dictionary.
-
-        style: Style constant to determine the style of the translation. Can be one of 
-            the following: STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, 
-            STYLE_DIALECT_NARROW, STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, 
-            STYLE_STANDARD_NARROW. 
-        translatable_only: If True, only the entries that the user's browser was
-                able to translate will be returned. If False, untranslatable entries
-                will show up in English.      
-        """
         return self._get_options("currency", "currency", style, translatable_only)
         
     
