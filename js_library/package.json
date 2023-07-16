@@ -24,6 +24,7 @@
   "dependencies": {
     "@fluent/bundle": "^0.18.0",
     "@fluent/dom": "^0.9.0",
+    "@formatjs/intl-localematcher": "^0.4.0",
     "get-user-locale": "^2.2.1",
     "intl-pluralrules": "^2.0.0"
   }

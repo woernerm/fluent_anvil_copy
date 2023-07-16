@@ -2,6 +2,7 @@ import 'intl-pluralrules'
 import { Localization, DOMLocalization } from "@fluent/dom";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { getUserLocales } from 'get-user-locale';
+import {match} from '@formatjs/intl-localematcher'
 
 /**
  * Load a fluent file for the given locale and url.
@@ -69,6 +70,26 @@ export function get_user_locales(fallback){
     return getUserLocales({fallbackLocale: fallback, useFallbackLocale: true})
   }
   return getUserLocales()  
+}
+
+/**
+ * Finds the best matching locales.
+ * 
+ * Given a list of requested locales and locales available (i.e. those supported by the 
+ * application), the method returns a single, available locale that best fits any of the 
+ * requested locales. If there is no sensible match, the default_locale is returned 
+ * (e.g. the application's primary / best supported language or a widely spoken locale 
+ * like english).
+ * 
+ * @param {list} requested_locales - A list of locales that the user prefers.
+ * @param {list} available_locales - A list of locales that the application supports.
+ * @param {list} default_locale - The locale to return if no sensible match is found.
+ * @returns {list} - The best fitting locale or the given default locale if there is
+ * no sensible match.
+ */
+export function match_locale(requested_locales, available_locales, default_locale){
+  const opts = {algorithm: 'best fit'};
+  return match(requested_locales, available_locales, default_locale, opts)
 }
 
 /**
