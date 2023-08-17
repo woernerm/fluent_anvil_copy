@@ -1,21 +1,21 @@
-# Fluent Anvil
-This library makes it easy to serve high-quality translated and localized versions of 
-your [Anvil](https://anvil.works/) app. You can make your app appeal to and accessible 
-for everyone. All you need to do is add it as a third-party dependency with the token 
-UHLC7WE6TELL25TO . You do not need to download this repository unless you want to 
-contribute (you are welcome to do so) or want to know how it works. 
+# FluentAnvil
 
+## Introduction
+Make your [Anvil](https://anvil.works/) app appeal to users all around the world by
+serving high-quality translations and displaying dates and numbers the way your users
+expect. With FluentAnvil, this becomes a breeze!
 The library serves as a Python interface to [Fluent](https://projectfluent.org/). It is 
 a localization system developed by Mozilla for natural-sounding translations. In 
-contrast to gettext you can create more nuanced and natural sounding translations. 
-For example, Polish has more plural forms than English or German. Therefore, selecting 
-the right translation requires knowing how many there are of something. With 
-localization systems like gettext, this requires adding additional logic inside your 
-application. With Fluent, this language-specific logic is encapsulated in the 
-translation file and does not impact other translations.
+contrast to gettext you can create more nuanced and natural sounding translations. This
+is because fluent does not assume a one-to-one mapping between the original language
+(often English) and the translation. For example, Polish has more plural forms than 
+English or German. Therefore, selecting the right translation requires knowing how many 
+there are of something. With localization systems like gettext, this requires adding 
+additional logic inside your application. With Fluent, this language-specific logic is 
+encapsulated in the translation file and does not impact other translations.
 
 Personally, I think the greatest thing about Fluent apart from the translation quality 
-is that is easier to learn and use than gettext: It uses only one simple text file 
+is that it is easier to learn and use than gettext: It uses only one simple text file 
 format (.ftl) and does not require specialized extraction tools. Often, translations are 
 as simple as this:
 
@@ -37,20 +37,28 @@ The translation happens entirely on the client side. Therefore, it works on
 [Anvil's free plan](https://anvil.works/pricing) as well since there is no need to 
 install a special package.
 
+You can put the .ftl translation files into a directory as part of your app's assets.
+The library will automatically select and load the translation file that the user   
+prefers most based on the client's browser settings.
+
 Please note that this is a personal project with the hope that it may be of use to 
 others as well. I am neither affiliated with 
 [Project Fluent](https://projectfluent.org/) nor [Anvil](https://anvil.works/).
 
 ## Quick Guide
+### Installation
+All you need to do is log into your Anvil account and add it as a third-party dependency 
+with the token `UHLC7WE6TELL25TO` .
+
 ### IETF language tags
 Languages can come in many variants. For example, English is spoken and written slightly 
 differently depending on where you are. There is British English, Canadian English, 
-American English, and many others. In order to identify these languages in the Internet, 
+American English, and many others. In order to identify these languages on the Internet, 
 standardized codes are used, e.g., "en-US" identifies English as spoken in the United 
 States and "zh-Hant-HK" identifies Traditional Chinese as used in Hong Kong. Such a code 
 is called [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). These 
 tags are composed of subtags identifying the primary language (e.g., "en" for English), 
-the regional variant of a language (e.g., "US" for United States), the script (e.g. 
+the regional variant of a language (e.g., "US" for United States), the script (e.g., 
 "Latn" for Latin or "Taml" for Tamil), and other aspects that make up a specific 
 language variant. 
 Apart from the primary language tag, all other tags are optional and should be used only 
@@ -58,9 +66,10 @@ to add distinguishing information. The tags are there to serve YOUR needs. There
 you can add subtags depending on what YOU need. Therefore, if your app is translated 
 only into a couple of languages, the primary language tag might suffice to uniquely 
 identify all your translations. For more detail, you can find a great explanation by 
-the World Wide Web Consortium [here](https://www.w3.org/International/articles/language-tags/). 
+the World Wide Web Consortium 
+[here](https://www.w3.org/International/articles/language-tags/). 
 
-### Translation files
+### Translation
 In Anvil's assets section, add a directory to place your translations in, ideally you 
 have one subfolder for each locale, e.g.
 - localization
@@ -70,6 +79,7 @@ have one subfolder for each locale, e.g.
          - main.ftl
      - de_DE
          - main.ftl
+     - index.lst
 
 With Fluent, you can use variables for placeholders or selecting the appropriate 
 translation. In the following example we are going to greet the user. Therefore, we use 
@@ -92,36 +102,55 @@ method does not use Fluent but the
 Now, you can configure Fluent using the following (we ignore the preferred locale for 
 now):
 ```py
-fluent.configure(["es-MX"], "localization/{locale}/main.ftl")
+fluent.configure(
+    ["es-MX"], 
+    "{locale}/main.ftl", 
+    "./_/theme/localization/",
+    "index.lst"
+)
 ```
 This will tell fluent to use the Mexican Spanish locale. The first parameter is a list 
 of desired locales. Locales are given in the order of preference (most preferable 
 first). This means, Fluent will always try the first locale in the list when trying to 
 find a translation. If a translation is not available for that locale, Fluent will try 
-the others one after another until a suitable translation has been found. The second 
-parameter is a template string indicating where the translation files are stored. The 
-placeholder {locale} is replaced with the desired locale (hyphens converted to 
-underscore, because Anvil does not allow hyphens in directory names). The 
-`fluent.configure()` and `fluent.set_locale()` methods accept locales regardless of 
-whether you use hyphens or underscores. Note that you do not have to provide the full 
-URL starting with `./_/theme/`. It will be prepended automatically. If your translation 
-files are stored somewhere else entirely you can explicitly set the prefix by adding it 
-to the end of the parameter list. The template string in the above example is the 
-default. So, if you store your translations files in the way outlined above, you can 
-omit it. In this case, the call becomes simply:
+the others until a suitable translation has been found. The second parameter is a 
+template string indicating where the translation files are stored relative to a root
+directory (third argument). The placeholder {locale} is replaced with the desired locale 
+(hyphens are converted to underscores, because Anvil does not allow hyphens in directory 
+names). The `fluent.configure()` method accepts locales regardless of whether you use 
+hyphens or underscores. You can also provide None for the locale so that FluentAnvil
+will choose a locale automatically based on what the user most likely prefers:
 ```py
-fluent.configure(["es-MX"])
+fluent.configure(
+    None, 
+    "{locale}/main.ftl", 
+    "./_/theme/localization/",
+    "index.lst"
+)
 ```
-It makes sense to structure your translations into multiple files (e.g. you could have
+The settings chosen in the above example are actually the default. So, if you
+put your translation files into a folder named `localization` as part of your app's
+assets, then you don't have to configure anything. The last parameter is the relative
+path to a file named index.lst. The default assumes that this file is located directly
+in the `localization` folder. It contains a simple list of all locales available:
+localization/index.lst:
+```
+de-DE
+en-US
+es-MX
+```
+Again, it does not matter whether you use hyphen or underscore.
+
+It makes sense to structure your translations into multiple files (e.g., you could have
 a separate file for each form). You can provide path templates to all .ftl files as
 a list:
 ```py
 files = [
-    "localization/{locale}/main.ftl",
-    "localization/{locale}/profile_settings.ftl",
-    "localization/{locale}/my_subform.ftl"
+    "{locale}/main.ftl",
+    "{locale}/profile_settings.ftl",
+    "{locale}/my_subform.ftl"
 ]
-fluent.configure(["es-MX"], files)
+fluent.configure(templates=files)
 ```
 
 Now, you can greet the user:
@@ -140,7 +169,7 @@ de_DE/main.ftl:
 `time-elapsed = Vergangene Zeit: { $duration }s.`
 After calling a command like
 ```py
-print(fluent.format("time-elapsed", duration=12342423.234 ))
+print(fluent.format("time-elapsed", duration=12342423.234))
 ```
 the message will show up with locale `en-US` as:
 `Time elapsed: ⁨12,342,423.234⁩s.`
@@ -160,20 +189,102 @@ print(fluent.format(
 This returns a list of all translations in the same order as the corresponding Message 
 instances.
 
-You can switch to a different locale on the fly using `set_locale()`. Again, the first 
-list element is the desired locale and the remaining entries in the list are fallback 
-locales in case the translation searched for is not available for the desired locale.
+You can switch to a different locale on the fly using the `locale` property. Again, the 
+first list element is the desired locale and the remaining entries in the list are 
+fallback locales in case the translation searched for is not available for the desired 
+locale.
 ```py
-fluent.set_locale(["en-US", "en-GB", "en-AU"])
+fluent.locale = ["en-US", "en-GB", "en-AU"]
 ```
 Although this is completely equivalent to 
 `fluent.configure(["en-US", "en-GB", "en-AU"])`, its meaning is more obvious when 
 reading code.
 
+### Localized Formatting
+You can also use FluentAnvil to format numbers and dates like this:
+
+```py
+import datetime
+
+# Print the number 32000 the way it is written in the USA.
+fluent.locale = ["en-US"]
+print(fluent.format(320000)) # Displayed as: 320,000
+
+# Print the number 32000 the way it is written in Germany.
+fluent.locale = ["de_DE"]
+print(fluent.format(320000)) # Displayed as: 320.000
+
+mydate = datetime.datetime.fromisoformat("2011-11-04T03:05:23")
+
+# Print the date 2011-11-04T03:05:23 the way it is written in the USA.
+fluent.locale = ["en_US"]
+print(fluent.format(mydate)) # Displayed as: Nov 4, 2011, 3:05:23 AM
+
+# Print the date 2011-11-04T03:05:23 the way it is written in Germany.
+fluent.locale = ["de_DE"]
+print(fluent.format(mydate)) # Displayed as: 04.11.2011, 03:05:23
+
+mydate = datetime.time.fromisoformat("04:23:01")
+
+# Print the time 04:23:01 the way it is written in the USA.
+fluent.locale = ["en_US"]
+print(fluent.format(mydate)) # Displayed as: 4:23 AM
+
+# Print the time 04:23:01 the way it is written in Germany.
+fluent.locale = ["de_DE"]
+print(fluent.format(mydate)) # Displayed as: 04:23
+```
+
+If you have special requirements regarding the way dates and numbers shall be formatted,
+you have various options for customization at your disposal. As above, you can provide
+these using `fluent.configure()`. For example:
+```py
+fluent.configure(
+    # Make dates really long and verbose.
+    datetime_options = {
+        "dateStyle": "full", 
+        "timeStyle": "full",
+    },
+    # Use scientific notation and always display the sign.
+    number_options = {
+        "notation": "scientific",
+        "signDisplay": "always"
+    }
+)
+```
+With that, the previous example becomes:
+```py
+import datetime
+
+# Print the number 32000 the way it is written in the USA.
+fluent.locale = ["en-US"]
+print(fluent.format(320000)) # Displayed as: +3.2E5
+
+# Print the number 32000 the way it is written in Germany.
+fluent.locale = ["de_DE"]
+print(fluent.format(320000)) # Displayed as: +3,2E5
+
+mydate = datetime.datetime.fromisoformat("2011-11-04T03:05:23")
+
+# Print the date 2011-11-04T03:05:23 the way it is written in the USA.
+fluent.locale = ["en_US"]
+print(fluent.format(mydate)) # Displayed as: Friday, November 4, 2011 at 3:05:23 AM Central European Standard Time
+
+# Print the date 2011-11-04T03:05:23 the way it is written in Germany.
+fluent.locale = ["de_DE"]
+print(fluent.format(mydate)) # Displayed as: Freitag, 4. November 2011 um 03:05:23 Mitteleuropäische Normalzeit
+```
+
+Internally, FluentAnvil uses JavaScript's Intl.DateTimeFormat and Intl.NumberFormat
+functionality. Therefore, you can find a complete documentation of all options here:
+
+* [Options for numbers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat)
+* [Options for dates and times](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat)
+
 ### Keeping Translation Code Short and Expressive
 You often have various data structures that require translation. These include
 Anvil component attributes, lists, dictionaries, and combinations of these. With 
-Fluent-Anvil you can translate them on the fly without the need to unpack, translate and 
+FluentAnvil you can translate them on the fly without the need to unpack, translate and 
 repack them again. Some examples are given in the following.
 
 #### Dictionaries
@@ -249,7 +360,7 @@ message id and `data-l10n-args` for context variables (if needed) like this:
 me!</h1>
 ```
 If you do not initialize a Fluent instance, you will see "Localize me!". As soon as the 
-Fluent instance is initialized (e.g. with locale es-MX), the text changes to 
+Fluent instance is initialized (e.g., with locale es-MX), the text changes to 
 "Hola ⁨world⁩". If Fluent would fail for some reason, the default text (in
 this case "Localize me!") would be shown.
 
@@ -356,7 +467,7 @@ So, should you use `my_validator.validate(value, *args, **kwargs)` or
 `my_validator(value, default, *args, **kwargs)`? This depends on what you want to do
 in case validation fails. If you just want to display a message, call the
 validator. If you want to do several things at once like showing the message and
-changing the role of a component (e.g. to highlight the text box for which
+changing the role of a component (e.g., to highlight the text box for which
 validation failed), use `my_validator.validate(value, *args, **kwargs)` in a 
 try...except block as shown in the first example.
 
@@ -414,6 +525,35 @@ enforced (set second parameter to True). If the user will continue to draft the 
 enforced if the user has already written something. This is useful to avoid displaying 
 an error message although the user may have skipped the text field intentionally for 
 now. If minimum length shall always be enforced, just omit the second parameter.
+
+### Server-Side Validation
+When receiving data from the client, validation should also be performed on the 
+server-side as well. This is because the client can alter the code running on the
+client's browser but not the code running on the server. Fortunately, you do not have
+to write your validators again and can instead just reuse the ones you have already 
+written for the client! It works like this:
+
+Server-Side:
+```py
+# Import your text_length_validator from the above example here.
+
+@anvil.server.callable
+def save_text(text):
+    text_length_validator.validate(text, True)
+    # Do the actual saving here 
+```
+
+Client-Side:
+```py
+try:
+    anvil.server.call("save_text", "My nice text.")
+except ValidationError as e:
+    e.translate()
+    alert(str(e))
+```
+If validation fails, FluentAnvil will send the message id to the client. Just use
+the `translate()` message of the exception, convert it to a string and display it 
+somewhere as shown in the example above.
 
 ## Extras
 ### IETF Language Tag Registry
@@ -513,7 +653,7 @@ fluent.get_currency_options()
 ```
 
 ### General Remarks
-All names returned by the `get_[something]_options()` (i.e. the dictionary values) are 
+All names returned by the `get_[something]_options()` (i.e., the dictionary values) are 
 given in the selected locale or one of the selected fallback locales (as set by 
 `fluent.set_locale()`) if the user's browser can translate them. If not,
 the names are returned in English. If you would rather omit the name than bother
