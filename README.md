@@ -699,3 +699,7 @@ fluent.get_currency_name("ISK")
 
 The `style` parameter explained above is also available for all `get_[something]_name()` 
 functions.
+
+# Credits
+FluentAnvil uses the following libraries:
+* [Langcodes](https://github.com/rspeer/langcodes), used for python-only locale matching.
