@@ -44,16 +44,21 @@ async function create_bundle(locale, urls, errors) {
 /**
  * Create a generator function for creating the desired fluent bundle and select a 
  * suitable fallback if necessary.
- * @param {string} locale - Locale as IETF language tag, e.g. "en-US". 
- * @param {list} fallback_locales - Fallback locales as lift of IETF language tags.
+ * @param {string} locale - List of IETF language tags, e.g. "en-US" in order of 
+ *    preference (with the first element being the most preferable).
  * @param {object} errors - Container for all errors encountered during ftl parsing.
  * @returns - Generator function for returning a fluent bundle.
  */
-function create_bundle_generator(locale, fallback_locales, errors){
+function create_bundle_generator(locales, errors){
     return async function* generate_bundles(urls) {
-        yield await create_bundle(locale, urls, errors);
+        let fallbacks = []
+        yield await create_bundle(locales[0], urls, errors);
+        if (locales.length > 1){
+          fallbacks = locales.slice(1)
+        }
       
-        for (const entry of fallback_locales) {
+        // Try the remaining (fallback) locale options.
+        for (const entry of fallbacks) {
           yield await create_bundle(entry, urls, errors);
         }
     }
@@ -76,20 +81,30 @@ export function get_user_locales(fallback){
  * Finds the best matching locales.
  * 
  * Given a list of requested locales and locales available (i.e. those supported by the 
- * application), the method returns a single, available locale that best fits any of the 
- * requested locales. If there is no sensible match, the default_locale is returned 
- * (e.g. the application's primary / best supported language or a widely spoken locale 
- * like english).
+ * application), the method returns an ordered list of available locales that best fit 
+ * any of the requested locales. The first locale in the returned list is the one with
+ * the best fit. If there is no sensible match, the fallback is returned (e.g. the 
+ * application's primary / best supported language or a widely spoken locale like 
+ * english).
  * 
  * @param {list} requested_locales - A list of locales that the user prefers.
  * @param {list} available_locales - A list of locales that the application supports.
- * @param {list} default_locale - The locale to return if no sensible match is found.
+ * @param {list} fallback - The locale to return if no sensible match is found.
+ * @param {int} count - The maximum number of locales to return.
  * @returns {list} - The best fitting locale or the given default locale if there is
  * no sensible match.
  */
-export function match_locale(requested_locales, available_locales, default_locale){
+export function match_locale(requested_locales, available_locales, fallback, count=1){
   const opts = {algorithm: 'best fit'};
-  return match(requested_locales, available_locales, default_locale, opts)
+  let locales = []
+  for(let i=0; i < available_locales.length && i < count; i++){
+    let entry = match(requested_locales, available_locales.slice(i), fallback, opts)
+    // Each locale should be returned only once.
+    if (!locales.includes(entry)){
+      locales.push(entry)
+    }
+  }
+  return locales
 }
 
 /**
@@ -131,18 +146,18 @@ export function get_supported_locales(locales){
  * @param {string} urls - URL templates to the .ftl files. Use the
  * placeholder {locale} for inserting the desired locale. Since Anvil does not support
  * hypthens in directory names, the placeholder will use underscores, e.g. "en_US".
- * @param {string} locale - Locale as IETF language tag, e.g. "en-US". 
- * @param {list} fallback_locales - Fallback locale as IETF language tag, e.g. "en-US". 
+ * @param {string} locales - Locales as IETF language tag, e.g. "en-US" in the order
+ * of preference (with the first element being the most preferable).
  * @returns {object} Object containing a fluent DOMLocalization and Localization
  * instance. In addition, it also contains containers for all errors encountered during
  * intialization of both instances.
  */
-export function init_localization(urls, locale, fallback_locales){
+export function init_localization(urls, locales){
   let dom_errors = {entries: []}
   let main_errors = {entries: []}  
   
-  const dom_bundle_gen = create_bundle_generator(locale, fallback_locales, dom_errors)
-  const loc_bundle_gen = create_bundle_generator(locale, fallback_locales, main_errors)
+  const dom_bundle_gen = create_bundle_generator(locales, dom_errors)
+  const loc_bundle_gen = create_bundle_generator(locales, main_errors)
     
     
   // Activate DOM localization
@@ -158,4 +173,27 @@ export function init_localization(urls, locale, fallback_locales){
     main: main, 
     main_errors: main_errors.entries
   }
+}
+
+/**
+ * Format the given date to a localized string.
+ * @param {list} locales List of locales in order of preference.
+ * @param {datetime} isostring The date and time
+ * @param {object} options Object with special options.
+ * @returns String with the localized date and time.
+ */
+export function format_date(locales, isostring, options = null){
+  const datetime = new Date(isostring)
+  return new Intl.DateTimeFormat(locales, options ?? {}).format(datetime);
+}
+
+/**
+* Format the given date to a localized string.
+* @param {list} locales List of locales in order of preference.
+* @param {datetime} value The numeric value to format.
+* @param {object} options Object with special options.
+* @returns String with the localized date and time.
+*/
+export function format_number(locales, value, options = null){
+ return new Intl.NumberFormat(locales, options ?? {}).format(value);
 }

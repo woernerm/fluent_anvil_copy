@@ -5,11 +5,12 @@ scheduled_tasks:
     every: minute
     at: {}
   job_id: HVRVLPUJ
+dependencies: []
 services:
 - source: /runtime/services/tables.yml
   client_config: {enable_v2: true}
   server_config: {}
-startup: {type: form, module: _test_format}
+startup: {type: form, module: _test_validator}
 package_name: fluent_anvil
 allow_embedding: false
 name: fluent_anvil

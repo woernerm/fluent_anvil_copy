@@ -1,12 +1,12 @@
-import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+
 class Message:
     """Container for a translation request.
 
     The Message class is used to define a translation request. You can define a
-    message id and optional keyworded variables that are passed to fluent (e.g. for
+    message id and optional keyworded variables that are passed to fluent (e.g., for
     placeables). Alternatively, you may use it in a way similar to Python's setattr()
     function: In addition to the afore mentioned parameters you can define an object
     and the name of the attribute to write to. The translated string will then be
@@ -21,9 +21,10 @@ class Message:
                 ``Message(my_label, "text", "my_message_identifier", name="John")``
                 This example assumes that you have a form containing the label my_label
                 for greeting the user. The greeting message is defined
-                in the .ftl file using identifier my_message_identifier, e.g.:
-                ``my_message_identifier = Welcome, { $name }!`` or
-                ``my_message_identifier = Willkommen, { $name }!`
+                in the .ftl file using identifier my_message_identifier, for example:
+                ``my_message_identifier = Welcome, { $name }!`` 
+                or
+                ``my_message_identifier = Willkommen, { $name }!``
                 In the example above, the name is given as keyworded argument.
             Varian 2:
                 ``Message("my_message_identifier", name="John")``
@@ -32,7 +33,7 @@ class Message:
         Args:
             args: You may provide object (any), attribute name (str) and message id
                 (str). Alternatively, you can provide the message id (str) only.
-            kwargs: Optional keyworded variables to pass on to fluent (e.g. for
+            kwargs: Optional keyworded variables to pass on to fluent (e.g., for
                 placeables or selectors).
         """
         try:
@@ -55,11 +56,29 @@ class Message:
                 self.variables = kwargs
 
     def tofluent(self):
-        """Generate parameters for the javascript fluent library."""
+        """Generate parameters for the Javascript fluent library."""
         return {"id": self.msg_id, "args": self.variables}
 
+    def __serialize__(self, global_data):
+        return {
+            "msg_id": self.msg_id,
+            "variables": self.variables
+        }
+
+    def __deserialize__(self, data, global_data):
+        self.__init__(
+            data["msg_id"],
+            data.get("variabels", {})
+        )
+    
     def __str__(self):
         return f"<Message {self.msg_id}>"
 
     def __repr__(self):
         return f"<Message {self.msg_id}>"
+    
+try:
+    from anvil.server import portable_class
+    Message = portable_class(Message)
+except ImportError:
+    pass

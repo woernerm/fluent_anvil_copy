@@ -3,40 +3,61 @@ unique_ids:
     NativeDatepicker: '1681123198478213447581930.51083'
     AdminPanel: '1683318780637799275530917.9314'
     LocalizedMultiSelectDropdown: '1681557804219443345035306.9786'
+    _test_locale_match: '1689543774580846609939197.7675'
     _test_localizedmultiselectdropdown: '1681249872446386317839475.8664'
     _test_display_names: '1683236192157577287248967.3966'
+    _test_text: '1690559801391772603414650.8027'
     _test_format: '1677325303699804653819924.646'
     _test_validator: '1682195564209151278911538.88995'
   modules:
     utils._canvas_helpers: ECN7AUQA3FVV2AT5ZA6YVIS7D3QDR2AU
+    langcodes.registry_parser: Z46MCVY43QTOYD3LOBNPMK44A6RNVHHW
     message: EFIWK62PKCZOXWSJLRFTVTGTNC6FY4LH
     fluent: ON4KOJ2F4QANDMHC4GGKRHDS3PVWZOQL
+    js: '1689627532486697157342768.8456'
     utils._component_helpers: I4GNHN6QAYNDFC56ZWGCDCCIS6CPEZL7
     utils._writeback_waiter: W3KNGL7MB6AAZH6EAE7QPQYIFB72NXI4
+    langcodes: 4XJ2FSURCXS5B2IWUHHXJBASXU6ZBFRO
+    langcodes.data_dicts: M3EFOV2ORYWQJF5MPIAETEGCSMBUQVNQ
+    langcodes.util: DMSJMN2RR2YC4OGMUASXSBJNZ3WE5PXU
     registries: '1683403824507740744494914.7976'
     locale: '1684612190538750127526858.9917'
+    langcodes.language_distance: GK27QPIJXTMKE4C7M7QJIPZRWX4EPHJY
     utils._auto_refreshing: PCEVQWUTMI5OJLQRR3X4RTB4YFGPEYVK
     utils._timed: FXCVZ7E6RHX6AX3WW635M4AHLHAFKT7L
+    text: '168953960740471769093306.55779'
     _test: '1685127637919874068806638.5332'
     lib: '1682281807791181401581506.68472'
+    langcodes.build_data: 2K46MBIBPXOAIDSD54A44JHNI4Z6AIUE
+    langcodes.tag_parser: ITFQTKZZVUKUJTPW5BAL5DH73SR6KDQX
     validators: GUZKVLVXWS4WXBZW4AXMBXZQJF3OVSPZ
     exceptions: YVXTW2D6THUX3LKGY2R33DZNWNKHCENN
+    langcodes.language_lists: DARI37N5I4NQGGJ56IES4FAUIM4MFJTX
     utils: USONENFPXG6CB76SRJPKCGGPP27K2MCA
     utils._deprecated: YFZLMENHHEM4V2W4VQBEH5YWFNYR2LK3
   server_modules:
-    jsondb: '1685364592762353492871641.5218'
+    test_locale: '1690488881772997227177752.5297'
+    test_text: '1690557731755673269048084.7361'
+    test_validation: '168830985164195693443627.73325'
     update_tag_registry: '1683317966948985089503053.0442'
   assets:
+    registry/fluent_subtag_registry_script.json: '1687893427100218596360895.59274'
     test_localization/en_US/extras.ftl: G73GIAKOU5RMMSGY2N4M5N5RD23SJLJ5
     fluent_anvil.js.map: '1677415519947842660090687.2175'
     theme.css: ZYVSPRPCXFUAZCBI7HOCIW6YJUU26ZVZ
     test_localization/es_MX/main.ftl: '1677324810493640268837405.2228'
+    registry/fluent_subtag_registry_locale.json: '1687893383735687360265630.2953'
+    test_localization/index.lst: TMEASRHPLVG7COOXORGMUWGHBDO6FP4N
     standard-page.html: EAK4BD3VSCNA3QEDQGEYCZS7SBM7LDQA
     test_localization/es_MX/.gitkeep: '1677324760075274558786522.09576'
+    registry/fluent_subtag_registry_region.json: '1687893415771523622800837.7413'
+    registry/fluent_subtag_registry_suppress-script.json: '1687893391791453008051700.54083'
+    registry/fluent_subtag_registry_variant.json: '1687893408812622815759616.4495'
+    registry/.gitkeep: '168789335857799120448514.87445'
     test_localization/.gitkeep: '1677323869295749019807801.5189'
     test_localization/en_US/.gitkeep: '1677323894565607260119068.191'
     test_localization/de_DE/extras.ftl: TS53JQS34QD62XP6TIZD3SWIVAJINIIU
     test_localization/de_DE/main.ftl: S3PZXZSKAX4JMOTOZ3E3X6HBP3S736IZ
     fluent_anvil.js: '167741551131045273341163.812874'
+    registry/fluent_subtag_registry_currency.json: '1687893375328577156060139.9893'
     test_localization/en_US/main.ftl: '1677419242954288589118262.29236'
-    fluent_subtag_registry.json: '1685133170700553537188345.7231'

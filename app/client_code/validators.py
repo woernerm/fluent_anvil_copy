@@ -1,8 +1,3 @@
-import anvil.server
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
-from fluent_anvil.exceptions import ValidationError
 from fluent_anvil.message import Message
 
 class Validator:
@@ -12,8 +7,8 @@ class Validator:
         """Initialize Validator.
         
         Args:
-            fct: Validation function. Shall return True, if validation passed. False,
-                Otherwise.
+            fct: Validation function. Shall return True if validation passed. False,
+                otherwise.
             msg_id: The message ID for fluent.
             variables: Keyworded parameters that are passed on to fluent.
         """
@@ -25,11 +20,37 @@ class Validator:
             raise ValueError("The number of positional parameters must be even.")
       
         self._prior = Validator(*params, **variables) if params else None
+
+    def _run_checks(self, value, *args, **kwargs):
+        try:
+            # The if-clause is necessary so that all validators in a chain
+            # are run until the first one failed or all validators have been executed.
+            if self._prior:
+                valid, msg = self._prior._run_checks(value, *args, **kwargs)
+                if not valid:
+                    return False, msg
+            if not self._validator.safe_parse(value, *args, **kwargs).success:
+                return False, self._message
+        except AttributeError:
+            if not self._validator(value, *args, **kwargs):
+                return False, self._message
+        return True, None
+
+    def is_valid(self, value, *args, **kwargs):
+        """Validate the given value. Return True if validation passed. False, otherwise.
+
+        Args:
+            value: The value to validate.
+            args: Positional arguments to pass on to the validation function.
+            kwargs: Keyworded arguments to pass on to the validation function.
+        """
+        validity, _ = self._run_checks(value, *args, **kwargs)
+        return validity
     
     def __call__(self, value, default, *args, **kwargs):
         """Validate the given value without raising an Exception. 
         
-        If validation tests pass, the default value is returned. Otherwise, the
+        If all validation tests pass, the default value is returned. Otherwise, the
         translated error message is returned.
 
         Args:
@@ -38,41 +59,42 @@ class Validator:
             args: Positional arguments to pass on to the validation function.
             kwargs: Keyworded arguments to pass on to the validation function.
 
-        """
-        from .fluent import fluent          
-        
+        """  
         # Provide the current value to the translation
         self._message.variables["value"] = value
-        try:
-            if self._prior:
-                self._prior.validate(value, *args, **kwargs)
-            if not self._validator.safe_parse(value, *args, **kwargs).success:
-                return fluent.format(self._message)
-        except AttributeError:
-            if not self._validator(value, *args, **kwargs):
-                return fluent.format(self._message)
-        except ValidationError as exc:
-            return str(exc)
-        return default
+        valid, msg = self._run_checks(value, *args, **kwargs)
+        if valid:
+            return default
+        else:
+            from .fluent import fluent
+            return fluent.format(msg)
 
     def validate(self, value, *args, **kwargs):
-        """Validate the given value. Raise ValidationError if not successful.
+        """Validate the given value. Raise a ValidationError if not successful.
         
         Args:
             value: The value to validate.
-            default: Value to return if validation passes.
             args: Positional arguments to pass on to the validation function.
             kwargs: Keyworded arguments to pass on to the validation function.
         """
-        msg = self(value, None, *args, **kwargs)
-        if msg:
-            raise ValidationError(msg)
+        import anvil.server
+        from fluent_anvil.exceptions import ValidationError
+        
+        self._message.variables["value"] = value
+        valid, msg = self._run_checks(value, *args, **kwargs)
+        if not valid:
+            msg_id = msg.msg_id
+            variables = {} or msg.variables
+            error = ValidationError(msg_id, **variables)
+            if anvil.server.context.type == "browser":
+                error.translate()
+            raise error
     
     def chain(self, fct, msg_id: str, **variables):
         """Append another validation criterion.
         
         Args:
-            fct: Validation function. Shall return True, if validation passed. False,
+            fct: Validation function. Shall return True if validation passed. False,
                 Otherwise.
             msg_id: The message ID for fluent.
             variables: Keyworded parameters that are passed on to fluent.
@@ -89,15 +111,15 @@ class Validator:
 class LengthValidator(Validator):
     """Validates that the length of the given value is within a given range.
 
-    This is suitable for types that the len() function can be applied to, e.g. strings,
+    This is suitable for types that the len() function can be applied to, e.g., strings,
     lists, sets, etc. The validation and __call__ dunder have an optional second parameter that
     determines whether the minimum length is enforced. This is useful if enforcing the
     minimum length depends on whether the form is about to be saved or just validated
     during filling. If it is saved, the minimum length requirement should be enforced
     (set second parameter to True). If the form is still being drafted (second parameter
-    set to False) then the minimum length requirement shall only be enforced, if 
+    set to False) then the minimum length requirement shall only be enforced if 
     the user has already written something. If minimum length shall always be enforced,
-    just omitt the second parameter.
+    just omit the second parameter.
     """
     def __init__(self, minlen, maxlen, msg_too_short: str, msg_too_long: str, **variables):
         """Initialize Validator.
@@ -112,9 +134,9 @@ class LengthValidator(Validator):
                 therefore they do not have to be added manually. 
         """
 
-        inactive = (lambda x, s = True: True)
-        enforce_minlength = (lambda x, s = True: not (s or x) or len(x) >= minlen)
-        enforce_maxlength = (lambda x, s = True: len(x) <= maxlen)
+        inactive = (lambda x, s = True, *a, **k: True)
+        enforce_minlength = (lambda x, s = True, *a, **k: not (s or x) or len(x) >= minlen)
+        enforce_maxlength = (lambda x, s = True, *a, **k: len(x) <= maxlen)
         
         super().__init__(
             inactive if minlen is None else enforce_minlength,

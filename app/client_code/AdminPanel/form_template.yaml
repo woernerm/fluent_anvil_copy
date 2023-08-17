@@ -12,10 +12,58 @@ components:
   event_bindings: {click: update_registry_button_click}
 - type: Button
   properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-    foreground: '', visible: true, text: Export Database, font_size: null, font: '',
+    foreground: '', visible: true, text: Export Languages, font_size: null, font: '',
     spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
     bold: false, underline: false, icon: ''}
-  name: export_json
+  name: export_language_json
   layout_properties: {grid_position: 'JQLQWJ,RDZPYO'}
-  event_bindings: {click: export_json_click}
+  event_bindings: {click: export_language_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Scripts, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: ''}
+  name: export_script_json
+  layout_properties: {grid_position: 'KONKDK,HOCYDJ'}
+  event_bindings: {click: export_script_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Regions, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: ''}
+  name: export_region_json
+  layout_properties: {grid_position: 'ESNDAV,DSAVDP'}
+  event_bindings: {click: export_region_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Variants, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: ''}
+  name: export_variant_json
+  layout_properties: {grid_position: 'UGWUJP,MDPDXT'}
+  event_bindings: {click: export_variant_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Suppressed Scripts, font_size: null,
+    font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+    background: '', bold: false, underline: false, icon: ''}
+  name: export_supress_script_json
+  layout_properties: {grid_position: 'OVAUYQ,AQIUGW'}
+  event_bindings: {click: export_supress_script_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Locales, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: ''}
+  name: export_locale_json
+  layout_properties: {grid_position: 'WSUSNO,JAUEQL'}
+  event_bindings: {click: export_locale_json_click}
+- type: Button
+  properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+    foreground: '', visible: true, text: Export Currencies, font_size: null, font: '',
+    spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '',
+    bold: false, underline: false, icon: ''}
+  name: export_currency_json
+  layout_properties: {grid_position: 'YBLAKY,BBHOGH'}
+  event_bindings: {click: export_currency_json_click}
 is_package: true

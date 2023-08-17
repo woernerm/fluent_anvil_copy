@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fluent module &mdash; FluentAnvil 1.2.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="locale module" href="locale.html" />
+    <link rel="prev" title="client_code" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FluentAnvil
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">FluentAnvil User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Api Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">fluent module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fluent_anvil.fluent.Fluent"><code class="docutils literal notranslate"><span class="pre">Fluent</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.__init__"><code class="docutils literal notranslate"><span class="pre">Fluent.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.configure"><code class="docutils literal notranslate"><span class="pre">Fluent.configure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.format"><code class="docutils literal notranslate"><span class="pre">Fluent.format()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.format_table"><code class="docutils literal notranslate"><span class="pre">Fluent.format_table()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_currency_name"><code class="docutils literal notranslate"><span class="pre">Fluent.get_currency_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_currency_options"><code class="docutils literal notranslate"><span class="pre">Fluent.get_currency_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_language_options"><code class="docutils literal notranslate"><span class="pre">Fluent.get_language_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_locale_name"><code class="docutils literal notranslate"><span class="pre">Fluent.get_locale_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_locale_options"><code class="docutils literal notranslate"><span class="pre">Fluent.get_locale_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_region_name"><code class="docutils literal notranslate"><span class="pre">Fluent.get_region_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_region_options"><code class="docutils literal notranslate"><span class="pre">Fluent.get_region_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_script_name"><code class="docutils literal notranslate"><span class="pre">Fluent.get_script_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.get_script_options"><code class="docutils literal notranslate"><span class="pre">Fluent.get_script_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_LONG"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_DIALECT_LONG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_NARROW"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_DIALECT_NARROW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_SHORT"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_DIALECT_SHORT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_LONG"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_STANDARD_LONG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_NARROW"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_STANDARD_NARROW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_SHORT"><code class="docutils literal notranslate"><span class="pre">Fluent.STYLE_STANDARD_SHORT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.SUPPORTED_VALUE_TYPES"><code class="docutils literal notranslate"><span class="pre">Fluent.SUPPORTED_VALUE_TYPES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.index"><code class="docutils literal notranslate"><span class="pre">Fluent.index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.locale"><code class="docutils literal notranslate"><span class="pre">Fluent.locale</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.root"><code class="docutils literal notranslate"><span class="pre">Fluent.root</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fluent_anvil.fluent.Fluent.templates"><code class="docutils literal notranslate"><span class="pre">Fluent.templates</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="locale.html">locale module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="message.html">message module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text.html">text module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validators.html">validators module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FluentAnvil</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">client_code</a></li>
+      <li class="breadcrumb-item active">fluent module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/fluent.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fluent_anvil.fluent">
+<span id="fluent-module"></span><h1>fluent module<a class="headerlink" href="#module-fluent_anvil.fluent" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fluent_anvil.fluent.</span></span><span class="sig-name descname"><span class="pre">Fluent</span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Anvil interface for fluent and some convenience functions.</p>
+<p>The class interfaces with a JavaScript library that initializes fluent, feeds fluent
+the .ftl files matching the selected locale and provides some convenience functions
+like obtaining the user’s preferred locale.</p>
+<p>The function most you will use most often is Fluent.format().</p>
+<p class="rubric">Example</p>
+<p>The following will initialize fluent with Mexican Spanish locale and return the
+translation stored with message id “hello”. The name is given so that fluent
+may use it as a placeable. The last parameter is a list of fallback locales
+that will be iterated through if the given message id is not available
+for the “es_MX” locale:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span>
+    <span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;es_ES&quot;</span><span class="p">,</span> <span class="s2">&quot;en_US&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">templates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'{locale}/main.ftl'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'index.lst'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./_/theme/localization/'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize Fluent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – String path to the directory with the localization files.</p></li>
+<li><p><strong>index</strong> – Path to the index.lst file inside the root directory, e.g.
+“index.lst”. The file contains the language tags of all available
+locales, e.g.
+de
+en-US
+en-GB
+fr</p></li>
+<li><p><strong>templates</strong> – Template string or list of template strings to the .ftl
+files, inside the given root directory. For example,
+“{locale}/main.ftl”. You can only use the {locale} placeholder. It will
+contain the locale with underscore, e.g. “de_DE” instead of “de-DE”,
+because Anvil does not support hyphens for directory names.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.configure">
+<span class="sig-name descname"><span class="pre">configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locales</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">templates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.configure" title="Permalink to this definition"></a></dt>
+<dd><p>Configure the translation system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locales</strong> – A list of IETF language tags to set the translation system to in
+order of preference. The most appropriate option will be chosen
+automatically depending on which locales are actually available.</p></li>
+<li><p><strong>templates</strong> – Template paths or list of template paths to the .ftl
+files, inside the given root directory. For example,
+“{locale}/main.ftl”. You can only use the {locale} placeholder. It will
+contain the locale with underscore, e.g. “de_DE” instead of “de-DE”,
+because Anvil does not support hyphens for directory names.</p></li>
+<li><p><strong>root</strong> – Path to the directory with localization files, e.g.
+“./_/theme/localization/”.</p></li>
+<li><p><strong>index</strong> – Path to the index.lst file inside the root directory, e.g.
+“index.lst”. The file contains the language tags of all available
+locales, e.g.
+de
+en-US
+en-GB
+fr</p></li>
+<li><p><strong>datetime_options</strong> – Defines default options to use when formatting dates using
+the Fluent.format() method without any additional options. See
+documentation of the Fluent.format() method for a (possibly incomplete)
+list of options or the documentation of JavaScript’s Intl.DateTimeFormat
+object (which is used internally) for a complete list of options.</p></li>
+<li><p><strong>number_options</strong> – Defines default options to use when formatting numbers using
+the Fluent.format() method without any additional options. See
+documentation of the Fluent.format() method for a (possibly incomplete)
+list of options or the documentation of JavaScript’s Intl.NumberFormat
+object (which is used internally) for a complete list of options.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.format">
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.format" title="Permalink to this definition"></a></dt>
+<dd><p>Return a translation for the given message id / number / date and variables.</p>
+<p>You can use this function in multiple ways by providing:</p>
+<ul class="simple">
+<li><p>A single message id (with optional keyworded variables to pass on to Fluent)</p></li>
+<li><p>An arbitrary number of Message instances.</p></li>
+<li><p>A number (for displaying it in a localized format)</p></li>
+<li><p>A date, time, or datetime object (for displaying it in a localized format)</p></li>
+</ul>
+<p>In case of a date, time, or datetime object you may also provide additional
+options as keyworded arguments (kwargs). Since JavaScript’s Intl.DateTimeFormat
+functionality is used, the options are the same. You can find the complete
+documentation here:
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat</a>
+Some of these are:</p>
+<ul class="simple">
+<li><p>dateStyle: “full”, “long”, “medium”, “short” (the level of verbosity regarding
+the date)</p></li>
+<li><p>timeStyle: “full”, “long”, “medium”, “short” (the level of verbosity regarding
+the time)</p></li>
+<li><p>hour12: True or False (whether to use 12-hour time or 24-hour-time)</p></li>
+<li><p>TimeZoneName: “short”, “long”, “shortOffset”, “longOffset”, “shortGeneric”,
+“longGeneric” (the way of displaying the time zone)</p></li>
+<li><p>year: “2-digit”, “numeric”,</p></li>
+<li><p>month: “2-digit”, “numeric”, “narrow”, “short”, “long”,</p></li>
+<li><p>day: “2-digit”, “numeric”,</p></li>
+<li><p>dayPeriod: “narrow”, “short”, “long”</p></li>
+<li><p>hour: “2-digit”, “numeric”,</p></li>
+<li><p>minute: “2-digit”, “numeric”,</p></li>
+<li><p>second: “2-digit”, “numeric”,</p></li>
+<li><p>fractionalSecondDigits: 1, 2, 3</p></li>
+<li><p>weekday: “narrow”, “short”, “long”</p></li>
+<li><p>era: “narrow”, “short”, “long”</p></li>
+</ul>
+<p>In case of a number, you may also provide these options as keyworded arguments
+as well. Since JavaScript’s Intl.NumberFormat functionality is used, the options
+are the same. You can find the complete documentation here:
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat</a>
+Some of these are:</p>
+<ul class="simple">
+<li><p>notation: “standard”, “scientific”, “engineering”, “compact”</p></li>
+<li><p>numberingSystem: arab”, “arabext”, “bali”, “beng”, “thai”, “tibt”, etc.</p></li>
+<li><p>signDisplay: “auto”, “always”, “exceptZero”, “negative”, “never”</p></li>
+<li><p>useGrouping: “always”, “auto”, false, “min2”</p></li>
+<li><p>roundingMode: “ceil”, “floor”, “expand”, “trunc”, “halfCeil”, “halfEven”, etc.</p></li>
+<li><p>currencySign: “accounting”, “standard”</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>You get the translation for a single message id like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span><span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Alternatively, you can provide an arbitrary number of Message instances:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span><span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;world&quot;</span><span class="p">),</span>
+    <span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">),</span>
+    <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;welcome&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;john&quot;</span><span class="p">)</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+<p>You can format a number:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span><span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">32000</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You can format a date:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span><span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+<span class="n">exdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s1">&#39;2011-11-04T03:05:23&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You can format a date and provide additional options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fl</span> <span class="o">=</span> <span class="n">Fluent</span><span class="p">(</span><span class="s2">&quot;localization/</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> <span class="s2">&quot;es_MX&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+<span class="n">exdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s1">&#39;2011-11-04T03:05:23&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">dateStyle</span><span class="o">=</span><span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="n">timeStyle</span><span class="o">=</span><span class="s2">&quot;short&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – message id (as string) or Message instance to return a
+translation for.</p></li>
+<li><p><strong>args</strong> – An arbitrary number of additional Message instances (not message ids).</p></li>
+<li><p><strong>kwargs</strong> – Keyworded variables to pass on to Fluent (only in case
+parameter message is a string).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns: A translation string in case a string message id is given. If Message</dt><dd><p>instances are given, a list of translations in the same order.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.format_table">
+<span class="sig-name descname"><span class="pre">format_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.format_table" title="Permalink to this definition"></a></dt>
+<dd><p>Translate a list of dictionaries.</p>
+<p>This is meant for tabular data which consists of a list of dictionaries.
+The keys in these dictionaries represent the columns of the table. This
+method will translate the columns given in the “columns” parameter. Empty
+cells in the table will be ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The list of dictionaries to translate.</p></li>
+<li><p><strong>columns</strong> – A list of dictionary keys, i.e., column names to translate.
+Other dictionary keys will not be touched.</p></li>
+<li><p><strong>options</strong> – <p>Dictionary with which one can provide options for value
+columns that contain numbers, dates, etc. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;My Date Column&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;dateStyle&quot;</span><span class="p">:</span> <span class="s2">&quot;medium&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;My Number Column&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;notation&quot;</span><span class="p">:</span> <span class="s2">&quot;scientific&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>kwargs</strong> – Optional keyworded variables to pass on to fluent (e.g., for
+placeables or selectors).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_currency_name">
+<span class="sig-name descname"><span class="pre">get_currency_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_currency_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the translated name of the given currency / currencies.</p>
+<p>The name of the given currency code (e.g., “USD”, “EUR”) is returned in
+the language fluent has been configured for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> – The currency code (e.g., “USD”, “EUR”, “CNY”, etc.) or list of
+currency codes to get the translated name for.</p></li>
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_currency_options">
+<span class="sig-name descname"><span class="pre">get_currency_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translatable_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_currency_options" title="Permalink to this definition"></a></dt>
+<dd><p>Return all currencies and their translated name for display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+<li><p><strong>translatable_only</strong> – If True, skip options that cannot be adequately
+translated. Set to False to return all options even if the name is
+only available in English.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_language_options">
+<span class="sig-name descname"><span class="pre">get_language_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translatable_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_language_options" title="Permalink to this definition"></a></dt>
+<dd><p>Return all language tags and their translated name for display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+<li><p><strong>translatable_only</strong> – If True, skip options that cannot be adequately
+translated. Set to False to return all options even if the name is
+only available in English.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_locale_name">
+<span class="sig-name descname"><span class="pre">get_locale_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_locale_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the translated name of the given locale(s).</p>
+<p>The name of the given locale is returned in the language fluent has
+been configured for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locale</strong> – The locale or list of locales to get the translated name for.</p></li>
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_locale_options">
+<span class="sig-name descname"><span class="pre">get_locale_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translatable_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_locale_options" title="Permalink to this definition"></a></dt>
+<dd><p>Return complete locale tags (e.g., en-US) and their translated name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+<li><p><strong>translatable_only</strong> – If True, skip options that cannot be adequately
+translated. Set to False to return all options even if the name is
+only available in English.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_region_name">
+<span class="sig-name descname"><span class="pre">get_region_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_region_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the translated name of the given regions(s).</p>
+<p>The name of the given region code is returned in the language fluent has
+been configured for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> – The region code (e.g., “AT”, “US”, “GB”, etc.) or list of
+region codes to get the translated name for.</p></li>
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_region_options">
+<span class="sig-name descname"><span class="pre">get_region_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translatable_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_region_options" title="Permalink to this definition"></a></dt>
+<dd><p>Return all region tags and their translated name for display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+<li><p><strong>translatable_only</strong> – If True, skip options that cannot be adequately
+translated. Set to False to return all options even if the name is
+only available in English.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_script_name">
+<span class="sig-name descname"><span class="pre">get_script_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_script_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the translated name of the given script(s).</p>
+<p>The name of the given script code is returned in the language fluent has
+been configured for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> – The script code (e.g., “Arab”, “Latn”, etc.) or list of
+script codes to get the translated name for.</p></li>
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.get_script_options">
+<span class="sig-name descname"><span class="pre">get_script_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('dialect',</span> <span class="pre">'long')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translatable_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.get_script_options" title="Permalink to this definition"></a></dt>
+<dd><p>Return all script tags and their translated name for display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>style</strong> – Style constant. Can be one of the following:
+STYLE_DIALECT_LONG, STYLE_DIALECT_SHORT, STYLE_DIALECT_NARROW,
+STYLE_STANDARD_LONG, STYLE_STANDARD_SHORT, STYLE_STANDARD_NARROW.</p></li>
+<li><p><strong>translatable_only</strong> – If True, skip options that cannot be adequately
+translated. Set to False to return all options even if the name is
+only available in English.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_DIALECT_LONG">
+<span class="sig-name descname"><span class="pre">STYLE_DIALECT_LONG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('dialect',</span> <span class="pre">'long')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_LONG" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_DIALECT_NARROW">
+<span class="sig-name descname"><span class="pre">STYLE_DIALECT_NARROW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('dialect',</span> <span class="pre">'narrow')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_NARROW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_DIALECT_SHORT">
+<span class="sig-name descname"><span class="pre">STYLE_DIALECT_SHORT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('dialect',</span> <span class="pre">'short')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_DIALECT_SHORT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_STANDARD_LONG">
+<span class="sig-name descname"><span class="pre">STYLE_STANDARD_LONG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('standard',</span> <span class="pre">'long')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_LONG" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_STANDARD_NARROW">
+<span class="sig-name descname"><span class="pre">STYLE_STANDARD_NARROW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('standard',</span> <span class="pre">'narrow')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_NARROW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.STYLE_STANDARD_SHORT">
+<span class="sig-name descname"><span class="pre">STYLE_STANDARD_SHORT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('standard',</span> <span class="pre">'short')</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.STYLE_STANDARD_SHORT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.SUPPORTED_VALUE_TYPES">
+<span class="sig-name descname"><span class="pre">SUPPORTED_VALUE_TYPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'datetime.date'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.datetime'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'datetime.time'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;)</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.SUPPORTED_VALUE_TYPES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.index">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.index" title="Permalink to this definition"></a></dt>
+<dd><p>Return the relative path to the index.lst file.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.locale">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">locale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#fluent_anvil.fluent.Fluent.locale" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the current locale including fallbacks in order of preference.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.root">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.root" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the path to the localization directory.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fluent_anvil.fluent.Fluent.templates">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">templates</span></span><a class="headerlink" href="#fluent_anvil.fluent.Fluent.templates" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the templates paths for the fluent message files.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="client_code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="locale.html" class="btn btn-neutral float-right" title="locale module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marcus Wörner.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,20 +1,34 @@
-import anvil.server
 from datetime import datetime
 from anvil.http import request, HttpError
 from anvil.tables import app_tables, Transaction
-from .locale import decompose, compose
-from .exceptions import NotFound, NoSubtagRegistry
 from json import loads, dumps
 
 class JSONDB:
+
+    def __init__(self):
+        import anvil.server
+        self._url = f"{anvil.server.get_app_origin()}/_/theme/registry/fluent_subtag_registry"+"_{typename}.json"
+        self._content = {}
+
+    def _load(self, typename):
+        if typename in self._content:
+            return self._content[typename]
+        filename = self._url.format(typename=typename)
+        response = request(filename) 
+        self._content[typename] = loads(response.get_bytes().decode("utf-8"))
+        return self._content[typename]
+    
     def get(self, **kwargs):
-        return anvil.server.call('fluent_jsondb_get', **kwargs)   
+        cont = self._load(kwargs.get("type", ""))
+        return next((row for row in cont if all(row.get(ck) == cv for ck, cv in kwargs.items())))
 
     def search(self, **kwargs):
-        return anvil.server.call('fluent_jsondb_search', **kwargs)       
+        cont = self._load(kwargs.get("type", ""))
+        return [row for row in cont if all(row.get(ck) == cv for ck, cv in kwargs.items())]
     
 
 def get_subtag_registry():
+    from fluent_anvil.exceptions import NoSubtagRegistry
     if not hasattr(app_tables, "fluent_subtag_registry"):
         raise NoSubtagRegistry(
             'You need to define a table called "fluent_subtag_registry" first. '
@@ -147,9 +161,9 @@ class LocalSubtagRegistry:
             raise LookupError("No locale data available.")
         return row.get(self.COL_SUBTAGS)
 
-    def download_json(self):
-        data = [{"type": e["type"], "subtags": e["subtags"], "updated_on": e["updated_on"]} for e in self.db.search()]
-        blob = anvil.BlobMedia('text/plain', dumps(data).encode("utf-8"), name='fluent_subtag_registry.json')
+    def download_json(self, typename: str):
+        data = [{"type": e["type"], "subtags": e["subtags"], "updated_on": e["updated_on"].isoformat()} for e in self.db.search(type=typename)]
+        blob = anvil.BlobMedia('text/plain', dumps(data).encode("utf-8"), name=f'fluent_subtag_registry_{typename}.json')
         anvil.media.download(blob)
 
     def get_descriptions(self, code: str, typename: str):
@@ -180,6 +194,7 @@ class CLDRFile:
     """API url for obtaining directory contents in the cldr github repository."""
     
     def __init__(self, path: str):
+        from fluent_anvil.exceptions import NotFound
         self._url = self.URL_CLDR_RAW + path
         # Download the language tag registry. Fortunately,
         # this is just a text file with no authentication required.
@@ -265,6 +280,7 @@ class CLDRLocale:
     """Directory in which locale translations are stored."""
     
     def _get(self, filename: str, *relpath):
+        from fluent_anvil.exceptions import NotFound
         """Returns information in the given file at the given position in the json treee.
 
         Since all files always start with the "main", locale key, and "localeDisplayNames",
@@ -301,8 +317,8 @@ class CLDRLocale:
         def translate(registry: dict, components: dict, key: str):
             return {key: registry.get(components.get(key, None), None)}
         
-        dec = decompose(locale) 
-        return compose(self.patterns, {
+        dec = Locale(locale).decompose() 
+        return Locale.compose(self.patterns, {
             **translate(self.languages, dec, "language"),
             **translate(self.regions, dec, "region"),
             **translate(self.variants, dec, "variant"),
@@ -333,4 +349,15 @@ class CLDRLocale:
     def locale(self):
         return self._locale
 
+class LocaleIndex(list):
+    """Represents an index.lst file that lists all locales available."""
+
+    def __init__(self, index_url):
+        try:
+            response = request(index_url)
+            locales = response.get_bytes().decode("utf-8").split("\n")
+            cleaned = list({e.strip().replace("_", "-") for e in locales})
+            super().__init__(cleaned)
+        except HttpError as e:
+            raise HttpError(f'URL "{index_url}": {e}') from e
         

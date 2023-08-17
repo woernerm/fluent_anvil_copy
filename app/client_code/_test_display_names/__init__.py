@@ -24,7 +24,8 @@ class _test_display_names(_test_display_namesTemplate, TestCase):
         self.assertEqual(fluent.get_locale_name("de-AT", fluent.STYLE_STANDARD_LONG), "Deutsch (Österreich)")
         self.assertEqual(fluent.get_locale_name("de-AT", fluent.STYLE_DIALECT_LONG), "Österreichisches Deutsch")
         self.assertEqual(fluent.get_locale_name(["de-DE"], fluent.STYLE_DIALECT_LONG), ["Deutsch (Deutschland)"])
-
+        print(fluent.get_locale_name("de-AT", fluent.STYLE_STANDARD_LONG))
+        
         self.assertEqual(fluent.get_currency_name("eur"), "Euro")
         self.assertEqual(fluent.get_currency_name("CNY"), "Renminbi Yuan")
 
@@ -32,6 +33,7 @@ class _test_display_names(_test_display_namesTemplate, TestCase):
         self.assertEqual(fluent.get_region_name("AT"), "Österreich")
 
         self.assertEqual(fluent.get_script_name("Latn"), "Lateinisch")
+        print(fluent.get_script_name("Latn"))
 
         # Incorrect subtags shall lead to None
         self.assertEqual(fluent.get_script_name("adrab"), None)

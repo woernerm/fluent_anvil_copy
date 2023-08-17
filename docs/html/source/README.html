@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FluentAnvil User Guide &mdash; FluentAnvil 1.2.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="client_code" href="modules.html" />
+    <link rel="prev" title="FluentAnvil User Guide" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FluentAnvil
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FluentAnvil User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-guide">Quick Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ietf-language-tags">IETF language tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#translation">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#localized-formatting">Localized Formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keeping-translation-code-short-and-expressive">Keeping Translation Code Short and Expressive</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dictionaries">Dictionaries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#anvil-components">Anvil Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lists-of-dictionaries-anvil-extras-multiselectdropdown">Lists of Dictionaries (Anvil Extras MultiSelectDropdown)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#bonus-round-translate-your-html-templates">Bonus Round: Translate your HTML Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#validation">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#predefined-validators">Predefined Validators</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lengthvalidator">LengthValidator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#server-side-validation">Server-Side Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extras">Extras</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ietf-language-tag-registry">IETF Language Tag Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-locale-data-repository">Common Locale Data Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-remarks">General Remarks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Api Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FluentAnvil</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">FluentAnvil User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/README.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="fluentanvil-user-guide">
+<h1>FluentAnvil User Guide<a class="headerlink" href="#fluentanvil-user-guide" title="Permalink to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>Make your <a class="reference external" href="https://anvil.works/">Anvil</a> app appeal to users all around the world by
+serving high-quality translations and displaying dates and numbers the way your users
+expect. With FluentAnvil, this becomes a breeze!
+The library serves as a Python interface to <a class="reference external" href="https://projectfluent.org/">Fluent</a>. It is
+a localization system developed by Mozilla for natural-sounding translations. In
+contrast to gettext you can create more nuanced and natural sounding translations. This
+is because fluent does not assume a one-to-one mapping between the original language
+(often English) and the translation. For example, Polish has more plural forms than
+English or German. Therefore, selecting the right translation requires knowing how many
+there are of something. With localization systems like gettext, this requires adding
+additional logic inside your application. With Fluent, this language-specific logic is
+encapsulated in the translation file and does not impact other translations.</p>
+<p>Personally, I think the greatest thing about Fluent apart from the translation quality
+is that it is easier to learn and use than gettext: It uses only one simple text file
+format (.ftl) and does not require specialized extraction tools. Often, translations are
+as simple as this:</p>
+<p>en_US/main.ftl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="o">-</span><span class="n">button</span> <span class="o">=</span> <span class="n">Close</span>
+</pre></div>
+</div>
+<p>de_DE/main.ftl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">close</span><span class="o">-</span><span class="n">button</span> <span class="o">=</span> <span class="n">Schließen</span>
+</pre></div>
+</div>
+<p>For simple translations, the syntax stays simple: Define a message id like
+<code class="docutils literal notranslate"><span class="pre">close-button</span></code> and provide the translation after the equal sign. If a translation
+happens to be more complicated for a language, you only need to add the logic in the
+translation file for that particular language. You can find out more at
+<a class="reference external" href="https://projectfluent.org/">Project Fluent</a>.
+The translation happens entirely on the client side. Therefore, it works on
+<a class="reference external" href="https://anvil.works/pricing">Anvil’s free plan</a> as well since there is no need to
+install a special package.</p>
+<p>You can put the .ftl translation files into a directory as part of your app’s assets.
+The library will automatically select and load the translation file that the user<br />
+prefers most based on the client’s browser settings.</p>
+<p>Please note that this is a personal project with the hope that it may be of use to
+others as well. I am neither affiliated with
+<a class="reference external" href="https://projectfluent.org/">Project Fluent</a> nor <a class="reference external" href="https://anvil.works/">Anvil</a>.</p>
+</section>
+<section id="quick-guide">
+<h2>Quick Guide<a class="headerlink" href="#quick-guide" title="Permalink to this heading"></a></h2>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
+<p>All you need to do is log into your Anvil account and add it as a third-party dependency
+with the token <code class="docutils literal notranslate"><span class="pre">UHLC7WE6TELL25TO</span></code> .</p>
+</section>
+<section id="ietf-language-tags">
+<h3>IETF language tags<a class="headerlink" href="#ietf-language-tags" title="Permalink to this heading"></a></h3>
+<p>Languages can come in many variants. For example, English is spoken and written slightly
+differently depending on where you are. There is British English, Canadian English,
+American English, and many others. In order to identify these languages on the Internet,
+standardized codes are used, e.g., “en-US” identifies English as spoken in the United
+States and “zh-Hant-HK” identifies Traditional Chinese as used in Hong Kong. Such a code
+is called <a class="reference external" href="https://en.wikipedia.org/wiki/IETF_language_tag">IETF language tag</a>. These
+tags are composed of subtags identifying the primary language (e.g., “en” for English),
+the regional variant of a language (e.g., “US” for United States), the script (e.g.,
+“Latn” for Latin or “Taml” for Tamil), and other aspects that make up a specific
+language variant.
+Apart from the primary language tag, all other tags are optional and should be used only
+to add distinguishing information. The tags are there to serve YOUR needs. Therefore,
+you can add subtags depending on what YOU need. Therefore, if your app is translated
+only into a couple of languages, the primary language tag might suffice to uniquely
+identify all your translations. For more detail, you can find a great explanation by
+the World Wide Web Consortium
+<a class="reference external" href="https://www.w3.org/International/articles/language-tags/">here</a>.</p>
+</section>
+<section id="translation">
+<h3>Translation<a class="headerlink" href="#translation" title="Permalink to this heading"></a></h3>
+<p>In Anvil’s assets section, add a directory to place your translations in, ideally you
+have one subfolder for each locale, e.g.</p>
+<ul class="simple">
+<li><p>localization</p>
+<ul>
+<li><p>es_MX</p>
+<ul>
+<li><p>main.ftl</p></li>
+</ul>
+</li>
+<li><p>en_US</p>
+<ul>
+<li><p>main.ftl</p></li>
+</ul>
+</li>
+<li><p>de_DE</p>
+<ul>
+<li><p>main.ftl</p></li>
+</ul>
+</li>
+<li><p>index.lst</p></li>
+</ul>
+</li>
+</ul>
+<p>With Fluent, you can use variables for placeholders or selecting the appropriate
+translation. In the following example we are going to greet the user. Therefore, we use
+a variable as a placeholder for the user’s name. Assume that the content of
+es_MX/main.ftl is: <code class="docutils literal notranslate"><span class="pre">hello</span> <span class="pre">=</span> <span class="pre">Hola</span> <span class="pre">{</span> <span class="pre">$name</span> <span class="pre">}.</span></code></p>
+<p>Then, import the fluent singleton object and the Message class in your form (Message is
+optional but required for the examples):</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">fluent</span><span class="p">,</span> <span class="n">Message</span>
+</pre></div>
+</div>
+<p>If you want to know which locale the user prefers, just call</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">get_preferred_locales</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will return a list of locales such as <code class="docutils literal notranslate"><span class="pre">['de-DE']</span></code> that the user prefers (this
+method does not use Fluent but the
+<a class="reference external" href="https://www.npmjs.com/package/get-user-locale">get-user-locale</a> package).</p>
+<p>Now, you can configure Fluent using the following (we ignore the preferred locale for
+now):</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;es-MX&quot;</span><span class="p">],</span> 
+    <span class="s2">&quot;</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;./_/theme/localization/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;index.lst&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This will tell fluent to use the Mexican Spanish locale. The first parameter is a list
+of desired locales. Locales are given in the order of preference (most preferable
+first). This means, Fluent will always try the first locale in the list when trying to
+find a translation. If a translation is not available for that locale, Fluent will try
+the others until a suitable translation has been found. The second parameter is a
+template string indicating where the translation files are stored relative to a root
+directory (third argument). The placeholder {locale} is replaced with the desired locale
+(hyphens are converted to underscores, because Anvil does not allow hyphens in directory
+names). The <code class="docutils literal notranslate"><span class="pre">fluent.configure()</span></code> method accepts locales regardless of whether you use
+hyphens or underscores. You can also provide None for the locale so that FluentAnvil
+will choose a locale automatically based on what the user most likely prefers:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+    <span class="kc">None</span><span class="p">,</span> 
+    <span class="s2">&quot;</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;./_/theme/localization/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;index.lst&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The settings chosen in the above example are actually the default. So, if you
+put your translation files into a folder named <code class="docutils literal notranslate"><span class="pre">localization</span></code> as part of your app’s
+assets, then you don’t have to configure anything. The last parameter is the relative
+path to a file named index.lst. The default assumes that this file is located directly
+in the <code class="docutils literal notranslate"><span class="pre">localization</span></code> folder. It contains a simple list of all locales available:
+localization/index.lst:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">de</span><span class="o">-</span><span class="n">DE</span>
+<span class="n">en</span><span class="o">-</span><span class="n">US</span>
+<span class="n">es</span><span class="o">-</span><span class="n">MX</span>
+</pre></div>
+</div>
+<p>Again, it does not matter whether you use hyphen or underscore.</p>
+<p>It makes sense to structure your translations into multiple files (e.g., you could have
+a separate file for each form). You can provide path templates to all .ftl files as
+a list:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;</span><span class="si">{locale}</span><span class="s2">/main.ftl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{locale}</span><span class="s2">/profile_settings.ftl&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{locale}</span><span class="s2">/my_subform.ftl&quot;</span>
+<span class="p">]</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">templates</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, you can greet the user:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Every variable you want to have access to in your .ftl files can be added as a keyword
+variable. Apart from facts like the user’s name this can be used to determine a natural
+sounding translation. These variables may include the count of something or the
+time of day. Depending on the type of variable, Fluent will automatically format the
+value according to the selected locale. For example, these messages:
+en_US/main.ftl:
+<code class="docutils literal notranslate"><span class="pre">time-elapsed</span> <span class="pre">=</span> <span class="pre">Time</span> <span class="pre">elapsed:</span> <span class="pre">{</span> <span class="pre">$duration</span> <span class="pre">}s.</span></code>
+and
+de_DE/main.ftl:
+<code class="docutils literal notranslate"><span class="pre">time-elapsed</span> <span class="pre">=</span> <span class="pre">Vergangene</span> <span class="pre">Zeit:</span> <span class="pre">{</span> <span class="pre">$duration</span> <span class="pre">}s.</span></code>
+After calling a command like</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;time-elapsed&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mf">12342423.234</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>the message will show up with locale <code class="docutils literal notranslate"><span class="pre">en-US</span></code> as:
+<code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">elapsed:</span> <span class="pre">⁨12,342,423.234⁩s.</span></code>
+While with locale “de_DE” it will show up as:
+<code class="docutils literal notranslate"><span class="pre">Vergangene</span> <span class="pre">Zeit:</span> <span class="pre">⁨12.342.423,234⁩s.</span></code>
+Pay attention to the use of dot and comma which is specific to the respective countries.</p>
+<p>You can translate multiple strings at once (that is more efficient than one by one) by
+wrapping them in Message objects:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;World&quot;</span><span class="p">),</span> 
+    <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;welcome-back&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">),</span>
+    <span class="o">...</span>
+<span class="p">))</span>
+</pre></div>
+</div>
+<p>This returns a list of all translations in the same order as the corresponding Message
+instances.</p>
+<p>You can switch to a different locale on the fly using the <code class="docutils literal notranslate"><span class="pre">locale</span></code> property. Again, the
+first list element is the desired locale and the remaining entries in the list are
+fallback locales in case the translation searched for is not available for the desired
+locale.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="s2">&quot;en-GB&quot;</span><span class="p">,</span> <span class="s2">&quot;en-AU&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Although this is completely equivalent to
+<code class="docutils literal notranslate"><span class="pre">fluent.configure([&quot;en-US&quot;,</span> <span class="pre">&quot;en-GB&quot;,</span> <span class="pre">&quot;en-AU&quot;])</span></code>, its meaning is more obvious when
+reading code.</p>
+</section>
+<section id="localized-formatting">
+<h3>Localized Formatting<a class="headerlink" href="#localized-formatting" title="Permalink to this heading"></a></h3>
+<p>You can also use FluentAnvil to format numbers and dates like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># Print the number 32000 the way it is written in the USA.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en-US&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">320000</span><span class="p">))</span> <span class="c1"># Displayed as: 320,000</span>
+
+<span class="c1"># Print the number 32000 the way it is written in Germany.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;de_DE&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">320000</span><span class="p">))</span> <span class="c1"># Displayed as: 320.000</span>
+
+<span class="n">mydate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2011-11-04T03:05:23&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the date 2011-11-04T03:05:23 the way it is written in the USA.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: Nov 4, 2011, 3:05:23 AM</span>
+
+<span class="c1"># Print the date 2011-11-04T03:05:23 the way it is written in Germany.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;de_DE&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: 04.11.2011, 03:05:23</span>
+
+<span class="n">mydate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;04:23:01&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the time 04:23:01 the way it is written in the USA.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: 4:23 AM</span>
+
+<span class="c1"># Print the time 04:23:01 the way it is written in Germany.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;de_DE&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: 04:23</span>
+</pre></div>
+</div>
+<p>If you have special requirements regarding the way dates and numbers shall be formatted,
+you have various options for customization at your disposal. As above, you can provide
+these using <code class="docutils literal notranslate"><span class="pre">fluent.configure()</span></code>. For example:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+    <span class="c1"># Make dates really long and verbose.</span>
+    <span class="n">datetime_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;dateStyle&quot;</span><span class="p">:</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;timeStyle&quot;</span><span class="p">:</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c1"># Use scientific notation and always display the sign.</span>
+    <span class="n">number_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;notation&quot;</span><span class="p">:</span> <span class="s2">&quot;scientific&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;signDisplay&quot;</span><span class="p">:</span> <span class="s2">&quot;always&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>With that, the previous example becomes:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># Print the number 32000 the way it is written in the USA.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en-US&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">320000</span><span class="p">))</span> <span class="c1"># Displayed as: +3.2E5</span>
+
+<span class="c1"># Print the number 32000 the way it is written in Germany.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;de_DE&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">320000</span><span class="p">))</span> <span class="c1"># Displayed as: +3,2E5</span>
+
+<span class="n">mydate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2011-11-04T03:05:23&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the date 2011-11-04T03:05:23 the way it is written in the USA.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: Friday, November 4, 2011 at 3:05:23 AM Central European Standard Time</span>
+
+<span class="c1"># Print the date 2011-11-04T03:05:23 the way it is written in Germany.</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;de_DE&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mydate</span><span class="p">))</span> <span class="c1"># Displayed as: Freitag, 4. November 2011 um 03:05:23 Mitteleuropäische Normalzeit</span>
+</pre></div>
+</div>
+<p>Internally, FluentAnvil uses JavaScript’s Intl.DateTimeFormat and Intl.NumberFormat
+functionality. Therefore, you can find a complete documentation of all options here:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">Options for numbers</a></p></li>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat">Options for dates and times</a></p></li>
+</ul>
+</section>
+<section id="keeping-translation-code-short-and-expressive">
+<h3>Keeping Translation Code Short and Expressive<a class="headerlink" href="#keeping-translation-code-short-and-expressive" title="Permalink to this heading"></a></h3>
+<p>You often have various data structures that require translation. These include
+Anvil component attributes, lists, dictionaries, and combinations of these. With
+FluentAnvil you can translate them on the fly without the need to unpack, translate and
+repack them again. Some examples are given in the following.</p>
+<section id="dictionaries">
+<h4>Dictionaries<a class="headerlink" href="#dictionaries" title="Permalink to this heading"></a></h4>
+<p>The format() method also works with dictionaries for which it will translate the values:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">({</span>
+        <span class="s2">&quot;my key 1&quot;</span><span class="p">:</span> <span class="s2">&quot;my-fluent-message&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;my key 2&quot;</span><span class="p">:</span> <span class="s2">&quot;my-other-fluent-message&quot;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="anvil-components">
+<h4>Anvil Components<a class="headerlink" href="#anvil-components" title="Permalink to this heading"></a></h4>
+<p>One of my favorite features is the possibility to write directly to GUI component
+attributes:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">fluent</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">Message</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;world&quot;</span><span class="p">),</span> 
+    <span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>You just provide the component and the name of the attribute you want to write to
+(like Python’s <code class="docutils literal notranslate"><span class="pre">setattr()</span></code> function).</p>
+</section>
+<section id="lists-of-dictionaries-anvil-extras-multiselectdropdown">
+<h4>Lists of Dictionaries (Anvil Extras MultiSelectDropdown)<a class="headerlink" href="#lists-of-dictionaries-anvil-extras-multiselectdropdown" title="Permalink to this heading"></a></h4>
+<p>Lists of dictionaries are commonly used to model tables: The list entries represent
+rows, and each dictionary entry represents a named column. You can translate these using
+the <code class="docutils literal notranslate"><span class="pre">format_table()</span></code> method. In the following example we are going to translate the
+names of time units. The data structure is typical to what the
+<a class="reference external" href="https://anvil-extras.readthedocs.io/en/latest/guides/components/multi_select_dropdown.html">MultiSelectDropdown from the Anvil Extras package</a>
+expects:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nanosecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-nanosecond&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;microsecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-microsecond&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;millisecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-millisecond&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-second&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-minute&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-hour&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-day&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-week&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;unit-year&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">translated_options</span> <span class="o">=</span> <span class="n">fluent</span><span class="o">.</span><span class="n">format_table</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">],</span> <span class="n">my_contenxt_var</span> <span class="o">=</span> <span class="s2">&quot;my context&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The second parameter is a list of keys to translate. Fluent-Anvil assumes that the value
+of every given key represents a Fluent message id. Other keys and their values will not
+be touched and returned as-is.
+Context variables can be provided as keyworded arguments or omitted completely. For
+example, consider you selected “de_DE” as locale and had someone provide you with the
+corresponding .ftl file, the result might look like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">translated_options</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;nanosecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Nanosekunde&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;microsecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Mikrosekunde&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;millisecond&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Millisekunde&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Sekunde&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Minute&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Stunde&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Tag&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Woche&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Jahr&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonus-round-translate-your-html-templates">
+<h3>Bonus Round: Translate your HTML Templates<a class="headerlink" href="#bonus-round-translate-your-html-templates" title="Permalink to this heading"></a></h3>
+<p>You can translate your static content as well. Just add the tags <code class="docutils literal notranslate"><span class="pre">data-l10n-id</span></code> for the
+message id and <code class="docutils literal notranslate"><span class="pre">data-l10n-args</span></code> for context variables (if needed) like this:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">h1</span> <span class="na">id</span><span class="o">=</span><span class="s">&#39;welcome&#39;</span> <span class="na">data-l10n-id</span><span class="o">=</span><span class="s">&#39;hello&#39;</span> <span class="na">data-l10n-args</span><span class="o">=</span><span class="s">&#39;{&quot;name&quot;: &quot;world&quot;}&#39;</span><span class="p">&gt;</span>Localize 
+me!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>If you do not initialize a Fluent instance, you will see “Localize me!”. As soon as the
+Fluent instance is initialized (e.g., with locale es-MX), the text changes to
+“Hola ⁨world⁩”. If Fluent would fail for some reason, the default text (in
+this case “Localize me!”) would be shown.</p>
+</section>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this heading"></a></h2>
+<p>An essential part of a good user interface is proper input validation. This requires
+that you provide feedback to the user in a language the user understands. Fluent-Anvil
+has you covered there as well: The validator module defines a <code class="docutils literal notranslate"><span class="pre">Validator</span></code> class with
+which you can define a translated validation procedure.</p>
+<p>Consider a datepicker called <code class="docutils literal notranslate"><span class="pre">my_datepicker</span></code> that allows the user to define a deadline
+for a task. We want to validate that the selected date is not in the past. Otherwise, a
+message informing the user about the invalid date shall be shown using a label component
+called <code class="docutils literal notranslate"><span class="pre">my_label</span></code>. A solution might look like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">Validator</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">deadline_validator</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(),</span>
+    <span class="s2">&quot;deadline-in-the-past&quot;</span><span class="p">,</span>
+    <span class="n">my_context_var</span> <span class="o">=</span> <span class="s2">&quot;my context&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The Validator initialization method only requires two parameters:</p>
+<ul class="simple">
+<li><p>A function that returns True if the value to be validated passed the validation test.
+False, otherwise. Alternatively, it may also be a
+<a class="reference external" href="https://anvil-extras.readthedocs.io/en/latest/guides/modules/zod.html">Zod validator from Anvil Extras</a>.</p></li>
+<li><p>A Fluent message id that represents an explanatory message to the user if validation
+fails.</p></li>
+</ul>
+<p>In the Form class of the Anvil app, we can define a change event for the datepicker in
+which validation is performed:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">._anvil_designer</span> <span class="kn">import</span> <span class="n">EditDateTemplate</span>
+<span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="c1"># Some other code like the definition of deadline_validator.</span>
+
+<span class="k">class</span> <span class="nc">EditDateForm</span><span class="p">(</span><span class="n">EditDateTemplate</span><span class="p">):</span>
+
+    <span class="c1"># Some other code</span>
+
+    <span class="k">def</span> <span class="nf">my_datepicker_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">event_args</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">deadline_validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_deadline</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">validate(value,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> method calls the lambda function defined earlier.
+The validation function is not limited to a single parameter. You can define an
+arbitrary validation function signature as long as it has at least one required
+parameter. You then provide all required parameter values to
+<code class="docutils literal notranslate"><span class="pre">validate(value,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> which in turn passes them on to your validation
+function.</p>
+<p>If validation succeeds, nothing happens. In the above example, the label text is set to
+an empty string. If validation fails, a ValidationError is thrown. The exception message
+will contain the desired translation corresponding to the message id
+<code class="docutils literal notranslate"><span class="pre">&quot;deadline-in-the-past&quot;</span></code> as defined earlier.</p>
+<p>Multiple validation steps can be chained by alternately providing validation function
+and Fluent message id during initialization of the Validator class like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">Validator</span>
+
+<span class="n">text_length_validator</span> <span class="o">=</span> <span class="n">Validator</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;text-too-short&quot;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="s2">&quot;text-too-long&quot;</span><span class="p">,</span>
+    <span class="n">my_context_var</span> <span class="o">=</span> <span class="s2">&quot;my context&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>When calling <code class="docutils literal notranslate"><span class="pre">validate(value,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> the validation functions are called
+one after another. In the above example, it is first checked whether the text is long
+enough. After that, it is checked whether the text is short enough. As usual, optional
+context variables can be passed on to the Fluent translation string by providing them as
+keyworded arguments.</p>
+<p>Validator objects are callable. This is useful if you do not want to throw an
+exception:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">._anvil_designer</span> <span class="kn">import</span> <span class="n">EditDateTemplate</span>
+<span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+
+<span class="c1"># Some other code like the definition of deadline_validator.</span>
+
+<span class="k">class</span> <span class="nc">EditDateForm</span><span class="p">(</span><span class="n">EditDateTemplate</span><span class="p">):</span>
+
+    <span class="c1"># Some other code</span>
+
+    <span class="k">def</span> <span class="nf">my_datepicker_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">event_args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">deadline_validator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_deadline</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the provided value passes validation, the given default value is returned (usually
+an empty string, None, or some other special value). Otherwise, the translated error
+message is returned.</p>
+<p>So, should you use <code class="docutils literal notranslate"><span class="pre">my_validator.validate(value,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">my_validator(value,</span> <span class="pre">default,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code>? This depends on what you want to do
+in case validation fails. If you just want to display a message, call the
+validator. If you want to do several things at once like showing the message and
+changing the role of a component (e.g., to highlight the text box for which
+validation failed), use <code class="docutils literal notranslate"><span class="pre">my_validator.validate(value,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> in a
+try…except block as shown in the first example.</p>
+<section id="predefined-validators">
+<h3>Predefined Validators<a class="headerlink" href="#predefined-validators" title="Permalink to this heading"></a></h3>
+<p>Some validation tasks occur more often than others. In this section, some predefined
+classes for validation will be presented. Over time, this section may grow.</p>
+<section id="lengthvalidator">
+<h4>LengthValidator<a class="headerlink" href="#lengthvalidator" title="Permalink to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">LengthValidator</span></code> class is useful for validating data that supports <code class="docutils literal notranslate"><span class="pre">len()</span></code>.
+Primarily, it is intended to validate that some text is neither too short nor too long.
+However, you can use it for lists and tuples just as well.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">._anvil_designer</span> <span class="kn">import</span> <span class="n">EditTextTemplate</span>
+<span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">LengthValidator</span>
+
+<span class="n">min_length</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">max_length</span> <span class="o">=</span> <span class="mi">120</span>
+
+<span class="n">text_length_validator</span> <span class="o">=</span> <span class="n">LengthValidator</span><span class="p">(</span>
+    <span class="n">min_length</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span>
+    <span class="s2">&quot;text-too-short&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;text-too-long&quot;</span><span class="p">,</span>
+    <span class="n">my_context_var</span> <span class="o">=</span> <span class="s2">&quot;my context&quot;</span>
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">EditTextForm</span><span class="p">(</span><span class="n">EditTextTemplate</span><span class="p">):</span>
+
+    <span class="c1"># Some other code</span>
+
+    <span class="k">def</span> <span class="nf">validate_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">text_length_validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_text</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">save</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">my_label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_text_area_lost_focus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">event_args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_form</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_save_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">event_args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_form</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first two parameters of <code class="docutils literal notranslate"><span class="pre">LengthValidator.__init__()</span></code> denote the minimum and maximum
+length of the text, respectively. The next two parameters denote the error message ids
+for a text that is too short and for a text that is too long. Finally, keyworded
+context variables can be added as usual. In case you do not need to validate the minimum
+or maximum length, you can set the corresponding parameter to None. Validation will then
+always succeed for that characteristic.
+The <code class="docutils literal notranslate"><span class="pre">validate()</span></code> function and <code class="docutils literal notranslate"><span class="pre">__call__</span></code> dunder have an optional second parameter that
+determines whether the minimum length is enforced. This is useful if enforcing the
+minimum length depends on whether the form is about to be saved or just validated
+during filling. If it is about to be saved, the minimum length requirement should be
+enforced (set second parameter to True). If the user will continue to draft the form
+(second parameter set to False) then the minimum length requirement shall only be
+enforced if the user has already written something. This is useful to avoid displaying
+an error message although the user may have skipped the text field intentionally for
+now. If minimum length shall always be enforced, just omit the second parameter.</p>
+</section>
+</section>
+<section id="server-side-validation">
+<h3>Server-Side Validation<a class="headerlink" href="#server-side-validation" title="Permalink to this heading"></a></h3>
+<p>When receiving data from the client, validation should also be performed on the
+server-side as well. This is because the client can alter the code running on the
+client’s browser but not the code running on the server. Fortunately, you do not have
+to write your validators again and can instead just reuse the ones you have already
+written for the client! It works like this:</p>
+<p>Server-Side:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import your text_length_validator from the above example here.</span>
+
+<span class="nd">@anvil</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">callable</span>
+<span class="k">def</span> <span class="nf">save_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text_length_validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Do the actual saving here </span>
+</pre></div>
+</div>
+<p>Client-Side:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">anvil</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;save_text&quot;</span><span class="p">,</span> <span class="s2">&quot;My nice text.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">e</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+    <span class="n">alert</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If validation fails, FluentAnvil will send the message id to the client. Just use
+the <code class="docutils literal notranslate"><span class="pre">translate()</span></code> message of the exception, convert it to a string and display it
+somewhere as shown in the example above.</p>
+</section>
+</section>
+<section id="extras">
+<h2>Extras<a class="headerlink" href="#extras" title="Permalink to this heading"></a></h2>
+<section id="ietf-language-tag-registry">
+<h3>IETF Language Tag Registry<a class="headerlink" href="#ietf-language-tag-registry" title="Permalink to this heading"></a></h3>
+<p>The IETF language tags are standardized. A list of all tags is available in the
+<a class="reference external" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">Language Subtag Registry</a>
+which is provided by the <a class="reference external" href="https://en.wikipedia.org/wiki/Internet_Assigned_Numbers_Authority">Internet Assigned Numbers Authority (IANA)</a>.
+It practically defines tags for all known languages (including almost extinct
+ones). Fluent Anvil comes with preprocessed copy of this registry (excluding
+obsolete and duplicate tags). You can easily use it to create dropdowns that allow
+your users to define a locale. For example, your users may upload a document and provide
+the locale it is written in.</p>
+<p>You can access this registry by using one of the following functions:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">fluent</span>
+
+<span class="c1"># Returns a dictionary with language tags as keys and the name of the language as value.</span>
+<span class="c1"># Example: </span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;soa&#39;: &#39;Thai Song&#39;, </span>
+<span class="c1">#   &#39;adf&#39;: &#39;Dhofari Arabic&#39;, </span>
+<span class="c1">#   &#39;atv&#39;: &#39;Northern Altai&#39;, </span>
+<span class="c1">#   &#39;aqm&#39;: &#39;Atohwaim&#39;, </span>
+<span class="c1">#   ...</span>
+<span class="c1"># }</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_language_options</span><span class="p">()</span>
+
+<span class="c1"># Returns a dictionary with region tags as keys and the name of the region as value.</span>
+<span class="c1"># Example: </span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;419&#39;: &#39;Latin America&#39;, </span>
+<span class="c1">#   &#39;TL&#39;: &#39;Timor-Leste&#39;, </span>
+<span class="c1">#   &#39;GD&#39;: &#39;Grenada&#39;, </span>
+<span class="c1">#   &#39;SA&#39;: &#39;Saudi Arabia&#39;, </span>
+<span class="c1">#   &#39;LU&#39;: &#39;Luxembourg&#39;, </span>
+<span class="c1">#   &#39;ID&#39;: &#39;Indonesia&#39;, </span>
+<span class="c1">#   &#39;PF&#39;: &#39;French Polynesia&#39;, </span>
+<span class="c1">#   ...</span>
+<span class="c1"># }</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_region_options</span><span class="p">()</span>
+
+<span class="c1"># Returns a dictionary with script tags as keys and the name of the script as value.</span>
+<span class="c1"># Example: </span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;Glag&#39;: &#39;Glagolitic&#39;, </span>
+<span class="c1">#   &#39;Loma&#39;: &#39;Loma&#39;, </span>
+<span class="c1">#   &#39;Batk&#39;: &#39;Batak&#39;, </span>
+<span class="c1">#   &#39;Avst&#39;: &#39;Avestan&#39;, </span>
+<span class="c1">#   &#39;Khmr&#39;: &#39;Khmer&#39;,</span>
+<span class="c1">#   ...</span>
+<span class="c1"># }</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_script_options</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="common-locale-data-repository">
+<h3>Common Locale Data Repository<a class="headerlink" href="#common-locale-data-repository" title="Permalink to this heading"></a></h3>
+<p>While IETF language tags are used to compose an arbitrary locale code (even nonsensical
+ones like “de-SA” for German as spoken in Saudi Arabia), the Common Locale Data
+Repository (CLDR) provides locale information like country names, month names, currency
+names, currency formatting, etc. for real locale codes such as “yue-Hant” for
+Traditional Cantonese. You can obtain all possible locale options by using:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">fluent</span>
+
+<span class="c1"># Returns a dictionary with locale codes as keys and the name of the locale as value.</span>
+<span class="c1"># Example: </span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;en-MS&#39;: &#39;English (Montserrat)&#39;, </span>
+<span class="c1">#   &#39;ksh&#39;: &#39;Colognian&#39;, </span>
+<span class="c1">#   &#39;fr-CF&#39;: &#39;French (Central African Republic)&#39;, </span>
+<span class="c1">#   &#39;wae&#39;: &#39;Walser&#39;, </span>
+<span class="c1">#   &#39;pt-LU&#39;: &#39;Portuguese (Luxembourg)&#39;, </span>
+<span class="c1">#   &#39;fr&#39;: &#39;French&#39;, </span>
+<span class="c1">#   &#39;en-JE&#39;: &#39;English (Jersey)&#39;, </span>
+<span class="c1">#   ...</span>
+<span class="c1"># }</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_locale_options</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also obtain possible currency options like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">fluent</span>
+<span class="c1"># Returns a dictionary with currency tags as keys and the name of the currency as value.</span>
+<span class="c1"># Example: </span>
+<span class="c1"># {</span>
+<span class="c1">#   &#39;IQD&#39;: &#39;Iraqi Dinar&#39;, </span>
+<span class="c1">#   &#39;SDP&#39;: &#39;Sudanese Pound (1957–1998)&#39;, </span>
+<span class="c1">#   &#39;ARL&#39;: &#39;Argentine Peso Ley (1970–1983)&#39;, </span>
+<span class="c1">#   &#39;ESA&#39;: &#39;Spanish Peseta (A account)&#39;, </span>
+<span class="c1">#   &#39;MAD&#39;: &#39;Moroccan Dirham&#39;, </span>
+<span class="c1">#   &#39;AWG&#39;: &#39;Aruban Florin&#39;, </span>
+<span class="c1">#   &#39;CHF&#39;: &#39;Swiss Franc&#39;, </span>
+<span class="c1">#   &#39;GNF&#39;: &#39;Guinean Franc&#39;,</span>
+<span class="c1">#   ...</span>
+<span class="c1"># }</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_currency_options</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="general-remarks">
+<h3>General Remarks<a class="headerlink" href="#general-remarks" title="Permalink to this heading"></a></h3>
+<p>All names returned by the <code class="docutils literal notranslate"><span class="pre">get_[something]_options()</span></code> (i.e., the dictionary values) are
+given in the selected locale or one of the selected fallback locales (as set by
+<code class="docutils literal notranslate"><span class="pre">fluent.set_locale()</span></code>) if the user’s browser can translate them. If not,
+the names are returned in English. If you would rather omit the name than bother
+your users with an English translation, you can do so by setting the <code class="docutils literal notranslate"><span class="pre">translatable_only</span></code>
+parameter of these functions to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>All these functions also have a <code class="docutils literal notranslate"><span class="pre">style</span></code> parameter that can be set to one of the
+following:</p>
+<ul class="simple">
+<li><p>fluent.STYLE_DIALECT_NARROW ; e.g. “Traditional Chinese (Hong Kong)”</p></li>
+<li><p>fluent.STYLE_DIALECT_SHORT</p></li>
+<li><p>fluent.STYLE_DIALECT_LONG</p></li>
+<li><p>fluent.STYLE_STANDARD_NARROW ; e.g. “Chinese (Traditional, Hong Kong)”</p></li>
+<li><p>fluent.STYLE_STANDARD_SHORT</p></li>
+<li><p>fluent.STYLE_STANDARD_LONG</p></li>
+</ul>
+<p>Note that not all styles lead to a different result for all subtags or locale codes. In
+fact, the results are often the same for multiple styles. This is not a bug, because
+how the styles are interpreted depends on the selected output locale (as set by
+<code class="docutils literal notranslate"><span class="pre">fluent.set_locale()</span></code>) as well as the locale code or subtag that shall be translated.</p>
+<p>If you already have a subtag, locale code, or currency code, you can translate it into
+the locale selected by <code class="docutils literal notranslate"><span class="pre">fluent.set_locale()</span></code> like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluent_anvil.lib</span> <span class="kn">import</span> <span class="n">fluent</span>
+
+<span class="c1"># Returns &quot;American English&quot;</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_locale_name</span><span class="p">(</span><span class="s2">&quot;en-US&quot;</span><span class="p">)</span>
+
+<span class="c1"># Returns &quot;Germany&quot;</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_region_name</span><span class="p">(</span><span class="s2">&quot;DE&quot;</span><span class="p">)</span>
+
+<span class="c1"># Returns &quot;Latin&quot;</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_script_name</span><span class="p">(</span><span class="s2">&quot;Latn&quot;</span><span class="p">)</span>
+
+<span class="c1"># Returns &quot;Icelandic Króna&quot;</span>
+<span class="n">fluent</span><span class="o">.</span><span class="n">get_currency_name</span><span class="p">(</span><span class="s2">&quot;ISK&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">style</span></code> parameter explained above is also available for all <code class="docutils literal notranslate"><span class="pre">get_[something]_name()</span></code>
+functions.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="FluentAnvil User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="client_code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marcus Wörner.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
