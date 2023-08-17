@@ -4,6 +4,7 @@
 Make your [Anvil](https://anvil.works/) app appeal to users all around the world by
 serving high-quality translations and displaying dates and numbers the way your users
 expect. With FluentAnvil, this becomes a breeze!
+
 The library serves as a Python interface to [Fluent](https://projectfluent.org/). It is 
 a localization system developed by Mozilla for natural-sounding translations. In 
 contrast to gettext you can create more nuanced and natural sounding translations. This
