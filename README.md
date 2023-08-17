@@ -46,6 +46,9 @@ Please note that this is a personal project with the hope that it may be of use 
 others as well. I am neither affiliated with 
 [Project Fluent](https://projectfluent.org/) nor [Anvil](https://anvil.works/).
 
+## Documentation
+You can find the [complete documentation here](https://woernerm.github.io/fluent_anvil/).
+
 ## Quick Guide
 ### Installation
 All you need to do is log into your Anvil account and add it as a third-party dependency 
