@@ -552,7 +552,7 @@ except ValidationError as e:
     alert(str(e))
 ```
 If validation fails, FluentAnvil will send the message id to the client. Just use
-the `translate()` message of the exception, convert it to a string and display it 
+the `translate()` method of the exception, convert it to a string and display it 
 somewhere as shown in the example above.
 
 ## Extras

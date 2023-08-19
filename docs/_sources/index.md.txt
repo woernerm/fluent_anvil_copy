@@ -17,6 +17,8 @@
 
    Api Documentation <source/modules>
 
+   Credits <source/credits.md>
+
 Indices and tables
 ==================
 
