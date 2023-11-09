@@ -1,8 +1,21 @@
-import 'intl-pluralrules'
-import { Localization, DOMLocalization } from "@fluent/dom";
+import { DOMLocalization } from "@fluent/dom";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { getUserLocales } from 'get-user-locale';
 import {match} from '@formatjs/intl-localematcher'
+
+// async function match_loc(requested_locales, available_locales, fallback, opts){
+//   if (typeof Intl.LocaleMatcher === 'undefined') {
+//     return import('@formatjs/intl-localematcher')
+//       .then(module => module.match(requested_locales, available_locales, fallback, opts));
+//   }
+//   return Intl.LocaleMatcher.match(requested_locales, available_locales, fallback, opts);
+// }
+
+async function init_plural_rules(requested_locales, available_locales, fallback, opts){
+  if (typeof Intl.PluralRules === 'undefined') {
+    await import('intl-pluralrules');
+  }
+}
 
 /**
  * Load a fluent file for the given locale and url.
@@ -94,11 +107,11 @@ export function get_user_locales(fallback){
  * @returns {list} - The best fitting locale or the given default locale if there is
  * no sensible match.
  */
-export function match_locale(requested_locales, available_locales, fallback, count=1){
+export async function match_locale(requested_locales, available_locales, fallback, count=1){
   const opts = {algorithm: 'best fit'};
   let locales = []
-  for(let i=0; i < available_locales.length && i < count; i++){
-    let entry = match(requested_locales, available_locales.slice(i), fallback, opts)
+  for(let lcidx=0; lcidx < available_locales.length && lcidx < count; lcidx++){
+    let entry = match(requested_locales, available_locales.slice(lcidx), fallback, opts)
     // Each locale should be returned only once.
     if (!locales.includes(entry)){
       locales.push(entry)
@@ -153,25 +166,19 @@ export function get_supported_locales(locales){
  * intialization of both instances.
  */
 export function init_localization(urls, locales){
-  let dom_errors = {entries: []}
-  let main_errors = {entries: []}  
-  
-  const dom_bundle_gen = create_bundle_generator(locales, dom_errors)
-  const loc_bundle_gen = create_bundle_generator(locales, main_errors)
-    
+  init_plural_rules()
+  let errors = {entries: []}    
     
   // Activate DOM localization
-  const dom = new DOMLocalization(urls, dom_bundle_gen);
-  dom.connectRoot(document.documentElement);
-  dom.translateRoots(); 
-
-  const main = new Localization(urls, loc_bundle_gen)
+  const bundle_generator = create_bundle_generator(locales, errors)
+  const loc = new DOMLocalization([], bundle_generator);
+  loc.addResourceIds(urls, false)
+  loc.connectRoot(document.documentElement);
+  loc.translateRoots(); 
 
   return {
-    dom: dom, 
-    dom_errors: dom_errors.entries,
-    main: main, 
-    main_errors: main_errors.entries
+    loc: loc, 
+    errors: errors.entries,
   }
 }
 
