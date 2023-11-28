@@ -3,204 +3,216 @@ import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { getUserLocales } from 'get-user-locale';
 import {match} from '@formatjs/intl-localematcher'
 
-// async function match_loc(requested_locales, available_locales, fallback, opts){
-//   if (typeof Intl.LocaleMatcher === 'undefined') {
-//     return import('@formatjs/intl-localematcher')
-//       .then(module => module.match(requested_locales, available_locales, fallback, opts));
-//   }
-//   return Intl.LocaleMatcher.match(requested_locales, available_locales, fallback, opts);
-// }
-
-async function init_plural_rules(requested_locales, available_locales, fallback, opts){
-  if (typeof Intl.PluralRules === 'undefined') {
-    await import('intl-pluralrules');
-  }
+/**
+ * Dynamicaly import pluralrules polyfill, if necessary
+ */
+async function init_plural_rules(){
+    if (typeof Intl.PluralRules === 'undefined') {
+        await import('intl-pluralrules');
+    }
 }
 
 /**
- * Load a fluent file for the given locale and url.
- * @param {string} locale - Locale as IETF language tag, e.g. "en-US".
- * @param {string} url - URL template to .ftl file.
- * @returns - Fluent resource.
+ * Fetch the data from multiple url's simultaneously and return the text result.
+ * 
+ * @param {Array} urls Array of urls to fetch.  
+ * @returns Array with text contents for each url. Entries that failed will be null.
  */
-async function fetch_resource(locale, resourceId) {
-    locale = locale.replace("-", "_") // Make Anvil-compatible path.
-    const url = resourceId.replace("{locale}", locale);
-    const response = await fetch(url);
-    const text = await response.text();
-    return new FluentResource(text);
-}
-
-  /**
-   * Create fluent bundle for the given locale and resource id. Also returns a list
-   * of all errors encountered.
-   * @param {string} locale - Locale as IETF language tag, e.g. "en-US".
-   * @param {string} urls - URL templates to .ftl files.
-   * @param {object} errors - Container for all errors encountered during ftl parsing.
-   * @returns {FluentBundle} - Fluent bundle.
-   */
-async function create_bundle(locale, urls, errors) {
-    let bundle = new FluentBundle(locale);
-
-    for (const url of urls) {
-      let resource = await fetch_resource(locale, url);
-      errors.entries += bundle.addResource(resource);
-    }
-
-    // Output errors, if any.
-    for (const entry of errors.entries) {
-      console.log("Error creating bundle for locale '" + locale + "':" + entry)
-    }
-    return bundle;
-}
-
-/**
- * Create a generator function for creating the desired fluent bundle and select a 
- * suitable fallback if necessary.
- * @param {string} locale - List of IETF language tags, e.g. "en-US" in order of 
- *    preference (with the first element being the most preferable).
- * @param {object} errors - Container for all errors encountered during ftl parsing.
- * @returns - Generator function for returning a fluent bundle.
- */
-function create_bundle_generator(locales, errors){
-    return async function* generate_bundles(urls) {
-        let fallbacks = []
-        yield await create_bundle(locales[0], urls, errors);
-        if (locales.length > 1){
-          fallbacks = locales.slice(1)
-        }
-      
-        // Try the remaining (fallback) locale options.
-        for (const entry of fallbacks) {
-          yield await create_bundle(entry, urls, errors);
+export async function bulk_fetch(urls){
+    const promises = urls.map(url => fetch(url));
+    await Promise.all(promises);    
+    let responses = [];
+    for (let i = 0; i<promises.length; i++){
+        let resp = await promises[i];
+        if (resp.status == 200){
+            responses.push(await resp.text());
+            console.log("Loaded " + urls[i] + ".");
+        }else{
+            console.warn("Unable to load " + urls[i] + ".");
         }
     }
-} 
-
-/**
- * Tries to detect the user's preferred locale. Returns the given fallback locale if
- * the operation fails.
- * @param {string} fallback - Fallback locale as IETF language tag, e.g. "en-US". 
- * @returns {list} - Returns a list of preferred locales.
- */
-export function get_user_locales(fallback){
-  if (fallback){
-    return getUserLocales({fallbackLocale: fallback, useFallbackLocale: true})
-  }
-  return getUserLocales()  
+    return responses;
 }
 
-/**
- * Finds the best matching locales.
- * 
- * Given a list of requested locales and locales available (i.e. those supported by the 
- * application), the method returns an ordered list of available locales that best fit 
- * any of the requested locales. The first locale in the returned list is the one with
- * the best fit. If there is no sensible match, the fallback is returned (e.g. the 
- * application's primary / best supported language or a widely spoken locale like 
- * english).
- * 
- * @param {list} requested_locales - A list of locales that the user prefers.
- * @param {list} available_locales - A list of locales that the application supports.
- * @param {list} fallback - The locale to return if no sensible match is found.
- * @param {int} count - The maximum number of locales to return.
- * @returns {list} - The best fitting locale or the given default locale if there is
- * no sensible match.
- */
-export async function match_locale(requested_locales, available_locales, fallback, count=1){
-  const opts = {algorithm: 'best fit'};
-  let locales = []
-  for(let lcidx=0; lcidx < available_locales.length && lcidx < count; lcidx++){
-    let entry = match(requested_locales, available_locales.slice(lcidx), fallback, opts)
-    // Each locale should be returned only once.
-    if (!locales.includes(entry)){
-      locales.push(entry)
+class Locale{
+    constructor(available, fallback, templates){
+        this.available = available; // The locales available.
+        this.fallback = fallback;
+        this._selected = []; // Best matching available locales likely preferred.
+        this.templates = templates; // URL templates to the .ftl files.
     }
-  }
-  return locales
+
+    /**
+     * Finds the best matching available locales with respect to the requested ones.
+     * 
+     * Given a list of requested locales, the method returns an ordered list of 
+     * available locales that best fit any of the requested locales (best to worst fit).
+     * 
+     * @param {Array} requested - A list of locales that the user prefers.
+     * @returns {Array} - The best fitting locales.
+     */
+    get selected(){
+        if (!this._selected.length){
+            const opts = {algorithm: 'best fit'};
+            const usopts = {fallbackLocale: fb, useFallbackLocale: true};
+            const fb = this.fallback;
+            const requested = getUserLocales(usopts);
+            
+            for(let i=0; i < Math.min(this.available.length, requested.length); i++){
+                let entry = match(requested, this.available.slice(i), fb, opts);
+                if (!this._selected.includes(entry)){this._selected.push(entry);}
+            }
+        }
+        if (!this._selected.length){console.error("Unable to select suitable locale.");}
+        return this._selected
+    }
+
+    set selected(locales){
+        this._selected = locales;
+    }
+
+    static async create(index_url, template_url, fallback){
+        let [available, templates] = await bulk_fetch([index_url, template_url]);
+        available = (available ?? "").split("\n").map((x) => x.replace("_", "-"));
+        templates = (templates ?? "").split("\n");
+        return new Locale(available, fallback, templates);
+    }
 }
 
-/**
- * Interface to Intl.DisplayNames class. It is used to return the names of the given 
- * locales (e.g. "en-US", "US", "en", etc.), scripts, currencies, etc in the given 
- * locale. This is useful to create a translated language, currency or region selection.
- * 
- * @param {string} codes - List of identifiers to translate.
- * @param {string} locale - The locale to translate to.
- * @param {string} type - The type ("language", "region", "currency") to translate.
- * @param {string} style - The style ("long", "short", "narrow") to translate.
- * @param {string} language - The way of phrasing the translation e.g. British English 
- * or English (United Kingdom).
- * @returns {list} - Returns the translation of the given code in the given locale.
- */
-export function get_display_name(codes, locales, type, language = "dialect", style = "long"){
-  const opts = {type: type, style: style, languageDisplay: language, fallback: "none"};
-  const translation = new Intl.DisplayNames(locales, opts);
-  return codes.map(cd => translation.of(cd));
+class Fluent{
+    /**
+     * Create fluent bundle for the given locale and resource id. 
+     * @param {string} loc - Locale as IETF language tag, e.g. "en-US".
+     * @param {string} templates - URL templates to .ftl files.
+     * @returns {FluentBundle} - Fluent bundle.
+     */
+    static async create_bundle(loc, templates) {
+        let bundle = new FluentBundle(loc);
+        const urls = templates.map((x) => x.replace("{locale}", loc.replace("-", "_"))); 
+
+        for (const text of (await bulk_fetch(urls))){
+          let errors = bundle.addResource(new FluentResource(text));
+          for (const e of errors){console.error(e);}
+        }
+        return bundle;
+    }
+
+    /**
+     * Create a fluent bundle generator.
+     * @param {Locale} index - Locale object.
+     * @returns - Generator function for returning a fluent bundle.
+     */
+    static create_bundle_generator(locale){
+        return async function* generate_bundles(templates) {
+            const locale_tags = (await locale).selected   
+            for (const loc of locale_tags){  
+                yield await Fluent.create_bundle(loc, templates);
+            }
+        }
+    } 
+
+    constructor(){
+        this.locale = null;
+        this.dom = null;
+        this.initialized = null
+    }
+
+    /**
+     * Initialize fluent translation system.
+     * @param {string} index_url - The url to the index.lst file.
+     * @param {string} template_url - The url to the templates.lst file.
+     * @returns {object} Fluent instance.
+     */
+    init(index_url, template_url, fallback){
+        this.initialized = new Promise(async (resolve, reject) => { 
+            init_plural_rules();
+            this.locale = await Locale.create(index_url, template_url, fallback);
+            this.dom = new DOMLocalization(
+                locale.templates, Fluent.create_bundle_generator(locale)
+            );
+            this.dom.connectRoot(document.documentElement);
+            this.dom.translateRoots(); 
+            resolve();
+        }).then(() => {
+            return true;
+        });
+        return this.initialized;
+    }
+
+
+    /**
+     * Interface to Intl.DisplayNames class. It is used to return the names of the given 
+     * locales, scripts, currencies, etc.
+     * 
+     * @param {string} codes - List of identifiers to translate, e.g. "US".
+     * @param {string} type - The type ("language", "region", "currency") to translate.
+     * @param {string} style - The style ("long", "short", "narrow") to translate.
+     * @param {string} language - The way of phrasing the translation e.g. British 
+     *      English or English (United Kingdom).
+     * @returns {string} - Returns the translation of the given code.
+     */
+    async get_display_name(fn, codes, type, language = "dialect", style = "long"){
+        await this.initialized;
+        const opts = {type: type, style: style, languageDisplay: language, fallback: "none"};
+        const translation = new Intl.DisplayNames(this.index.selected, opts);
+        res = codes.map(cd => translation.of(cd));
+        if (fn){fn(res);}
+        return res;
+    }
+
+    /**
+     * Format the given date to a localized string.
+     * @param {datetime} isostr The date and time
+     * @param {object} options Object with special options.
+     * @returns String with the localized date and time.
+     */
+    async format_date(fn, isostr, options = null){
+        await this.initialized;
+        res = new Intl.DateTimeFormat(this.locale.selected, options ?? {}).format(new Date(isostr));
+        if (fn){fn(res);}
+        return res;
+    }
+
+    /**
+    * Format the given date to a localized string.
+    * @param {datetime} value The numeric value to format.
+    * @param {object} options Object with special options.
+    * @returns String with the localized date and time.
+    */
+    async format_number(fn, value, options = null){
+        await this.initialized;
+        res = new Intl.NumberFormat(this.locale.selected, options ?? {}).format(value);
+        if (fn){fn(res);}
+        return res;
+    }
+
+
+    /**
+    * Return the translations for the given keys.
+    * @param {Array} keys List of message identifiers to translate.
+    * @param {Function} fn Callback function to call once translations are ready.
+    * @param {Array} args Arbitrary number of arguments passed to the callback function.
+    * @returns Translations for the given keys.
+    */
+    async format_values(fn, keys, ...args){
+        await this.initialized;
+        translations = await this.dom.formatValues(keys)
+        translations = [...translations]; // Convert missing values to undefined.
+        translations = translations.map(t => t ?? null) // Coerce undefined to null.
+        if (fn){fn(translations, ...args);}
+        return translations;
+    }
 }
 
-/**
- * Interface to Intl.DisplayNames class. It is used to return the names of the locales
- * that are supported on the client's machine, i.e. those for which there is a display
- * name available. If locales are given, a subset of this list is returned that is
- * supported.
- * 
- * @param {string} locales - List of locales to test for support. Null if all supported
- * locales shall be returned.
- * @returns {list} - Returns a list of all supported locales or a subset of the given
- * locales that are supported on the client's machine.
- */
-export function get_supported_locales(locales){
-  return Intl.DisplayNames.supportedLocalesOf(locales, {"localeMatcher": "lookup"})
+let fluent = Fluent()
+fluent.init(
+    "./_/theme/localization/index.lst", 
+    "./_/theme/localization/templates.lst", 
+    "en-US"
+);
+
+async function refresh(index_url, template_url, fallback){
+    await fluent.init(index_url, template_url, fallback);
 }
 
-/**
- * Initialize fluent translation system.
- * @param {string} urls - URL templates to the .ftl files. Use the
- * placeholder {locale} for inserting the desired locale. Since Anvil does not support
- * hypthens in directory names, the placeholder will use underscores, e.g. "en_US".
- * @param {string} locales - Locales as IETF language tag, e.g. "en-US" in the order
- * of preference (with the first element being the most preferable).
- * @returns {object} Object containing a fluent DOMLocalization and Localization
- * instance. In addition, it also contains containers for all errors encountered during
- * intialization of both instances.
- */
-export function init_localization(urls, locales){
-  init_plural_rules()
-  let errors = {entries: []}    
-    
-  // Activate DOM localization
-  const bundle_generator = create_bundle_generator(locales, errors)
-  const loc = new DOMLocalization([], bundle_generator);
-  loc.addResourceIds(urls, false)
-  loc.connectRoot(document.documentElement);
-  loc.translateRoots(); 
-
-  return {
-    loc: loc, 
-    errors: errors.entries,
-  }
-}
-
-/**
- * Format the given date to a localized string.
- * @param {list} locales List of locales in order of preference.
- * @param {datetime} isostring The date and time
- * @param {object} options Object with special options.
- * @returns String with the localized date and time.
- */
-export function format_date(locales, isostring, options = null){
-  const datetime = new Date(isostring)
-  return new Intl.DateTimeFormat(locales, options ?? {}).format(datetime);
-}
-
-/**
-* Format the given date to a localized string.
-* @param {list} locales List of locales in order of preference.
-* @param {datetime} value The numeric value to format.
-* @param {object} options Object with special options.
-* @returns String with the localized date and time.
-*/
-export function format_number(locales, value, options = null){
- return new Intl.NumberFormat(locales, options ?? {}).format(value);
-}
+export {fluent, refresh};
