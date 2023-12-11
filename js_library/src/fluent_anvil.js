@@ -26,7 +26,6 @@ export async function bulk_fetch(urls){
         let resp = await promises[i];
         if (resp.status == 200){
             responses.push(await resp.text());
-            console.log("Loaded " + urls[i] + ".");
         }else{
             console.warn("Unable to load " + urls[i] + ".");
         }
@@ -104,18 +103,12 @@ class Fluent{
      */
     static create_bundle_generator(locale){
         return async function* generate_bundles(templates) {
-            const locale_tags = (await locale).selected   
+            const locale_tags = (await locale).selected;   
             for (const loc of locale_tags){  
                 yield await Fluent.create_bundle(loc, templates);
             }
         }
     } 
-
-    constructor(){
-        this.locale = null;
-        this.dom = null;
-        this.initialized = null
-    }
 
     /**
      * Initialize fluent translation system.
@@ -123,12 +116,15 @@ class Fluent{
      * @param {string} template_url - The url to the templates.lst file.
      * @returns {object} Fluent instance.
      */
-    init(index_url, template_url, fallback){
+    constructor(index_url, template_url, fallback){
+        this.locale = null;
+        this.dom = null;
+
         this.initialized = new Promise(async (resolve, reject) => { 
             init_plural_rules();
             this.locale = await Locale.create(index_url, template_url, fallback);
             this.dom = new DOMLocalization(
-                locale.templates, Fluent.create_bundle_generator(locale)
+                this.locale.templates, Fluent.create_bundle_generator(this.locale)
             );
             this.dom.connectRoot(document.documentElement);
             this.dom.translateRoots(); 
@@ -136,9 +132,7 @@ class Fluent{
         }).then(() => {
             return true;
         });
-        return this.initialized;
     }
-
 
     /**
      * Interface to Intl.DisplayNames class. It is used to return the names of the given 
@@ -155,7 +149,7 @@ class Fluent{
         await this.initialized;
         const opts = {type: type, style: style, languageDisplay: language, fallback: "none"};
         const translation = new Intl.DisplayNames(this.index.selected, opts);
-        res = codes.map(cd => translation.of(cd));
+        const res = codes.map(cd => translation.of(cd));
         if (fn){fn(res);}
         return res;
     }
@@ -168,7 +162,7 @@ class Fluent{
      */
     async format_date(fn, isostr, options = null){
         await this.initialized;
-        res = new Intl.DateTimeFormat(this.locale.selected, options ?? {}).format(new Date(isostr));
+        const res = new Intl.DateTimeFormat(this.locale.selected, options ?? {}).format(new Date(isostr));
         if (fn){fn(res);}
         return res;
     }
@@ -181,11 +175,12 @@ class Fluent{
     */
     async format_number(fn, value, options = null){
         await this.initialized;
-        res = new Intl.NumberFormat(this.locale.selected, options ?? {}).format(value);
+        const res = new Intl.NumberFormat(this.locale.selected, options ?? {}).format(value);
+        console.log("res: " + res)
         if (fn){fn(res);}
+        console.log("return res:" + res)
         return res;
     }
-
 
     /**
     * Return the translations for the given keys.
@@ -196,23 +191,16 @@ class Fluent{
     */
     async format_values(fn, keys, ...args){
         await this.initialized;
-        translations = await this.dom.formatValues(keys)
-        translations = [...translations]; // Convert missing values to undefined.
-        translations = translations.map(t => t ?? null) // Coerce undefined to null.
+        let translations = await this.dom.formatValues(keys);
+        translations = [...translations].map(t => t ?? null); // Coerce undefined to null.
         if (fn){fn(translations, ...args);}
-        return translations;
     }
 }
 
-let fluent = Fluent()
-fluent.init(
+let fluent = new Fluent(
     "./_/theme/localization/index.lst", 
     "./_/theme/localization/templates.lst", 
     "en-US"
-);
+)
 
-async function refresh(index_url, template_url, fallback){
-    await fluent.init(index_url, template_url, fallback);
-}
-
-export {fluent, refresh};
+export {fluent};
