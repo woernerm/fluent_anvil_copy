@@ -1,7 +1,7 @@
 import { DOMLocalization } from "@fluent/dom";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 import { getUserLocales } from 'get-user-locale';
-import {match} from '@formatjs/intl-localematcher'
+import localematch from '.localematch';
 
 /**
  * Dynamicaly import pluralrules polyfill, if necessary
@@ -52,15 +52,9 @@ class Locale{
      */
     get selected(){
         if (!this._selected.length){
-            const opts = {algorithm: 'best fit'};
-            const usopts = {fallbackLocale: fb, useFallbackLocale: true};
-            const fb = this.fallback;
-            const requested = getUserLocales(usopts);
-            
-            for(let i=0; i < Math.min(this.available.length, requested.length); i++){
-                let entry = match(requested, this.available.slice(i), fb, opts);
-                if (!this._selected.includes(entry)){this._selected.push(entry);}
-            }
+            this._selected = localematch(
+                getUserLocales(usopts), this.available, this.fallback
+            );
         }
         if (!this._selected.length){console.error("Unable to select suitable locale.");}
         return this._selected
@@ -176,9 +170,7 @@ class Fluent{
     async format_number(fn, value, options = null){
         await this.initialized;
         const res = new Intl.NumberFormat(this.locale.selected, options ?? {}).format(value);
-        console.log("res: " + res)
         if (fn){fn(res);}
-        console.log("return res:" + res)
         return res;
     }
 
@@ -203,4 +195,4 @@ let fluent = new Fluent(
     "en-US"
 )
 
-export {fluent};
+export {fluent, localematch};

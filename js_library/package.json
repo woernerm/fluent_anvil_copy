@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "start": "npx parcel build --detailed-report --log-level verbose"
   },
   "author": "Marcus Wörner",
@@ -24,9 +24,10 @@
     "@parcel/compressor-gzip": "latest",
     "@parcel/optimizer-esbuild": "latest",
     "@parcel/optimizer-terser": "latest",
-    "@swc/cli": "latest", 
+    "@swc/cli": "latest",
     "@swc/core": "latest",
-    "parcel": "latest"
+    "parcel": "latest",
+    "vitest": "^1.1.0"
   },
   "dependencies": {
     "@fluent/bundle": "^0.18.0",
