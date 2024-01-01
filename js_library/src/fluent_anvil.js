@@ -1,7 +1,6 @@
 import { DOMLocalization } from "@fluent/dom";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
-import { getUserLocales } from 'get-user-locale';
-import localematch from '.localematch';
+import {localematch, getUserLocales} from '.localematch';
 
 /**
  * Dynamicaly import pluralrules polyfill, if necessary
